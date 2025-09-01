@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Candlestick Chart for Stock History</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: #23272e;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        #main-chart {
+            width: 100vw;
+            height: 90vh;
+            margin: 1vw auto;
+            background: #23272e;
+        }
+    </style>
+</head>
+<body>
+    <div id="main-chart"></div>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        let stockData = /*[[${stockData}]]*/ [];
+        
+        // Prepare data for ECharts
+        let dates = [];
+        let prices = [];
+        
+        stockData.forEach(data => {
+            dates.push(data.date); // Assuming date is in correct format
+            prices.push([data.open, data.close, data.low, data.high]); // [open, close, low, high]
+        });
+
+        const upColor = '#00da3c'; // Green color for upward movement
+        const downColor = '#ec0000'; // Red color for downward movement
+
+        // ECharts option
+        let option = {
+            title: {
+                text: window.location.href.split("/").pop(),
+                left: 'center',
+                textStyle: {
+                    color: '#ffffff'
+                }
+            },
+
+            tooltip: {
+                trigger: 'axis',
+                formatter: function(params) {
+                    let date = params[0].name;
+                    let open = params[0].data[0];
+                    let close = params[0].data[1];
+                    let low = params[0].data[2];
+                    let high = params[0].data[3];
+                    return `
+                        Date: ${date}<br/>
+                        Open: ${open}<br/>
+                        Close: ${close}<br/>
+                        Low: ${low}<br/>
+                        High: ${high}
+                    `;
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: dates,
+                boundaryGap: false
+            },
+            yAxis: {
+                type: 'value'
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    xAxisIndex: [0],
+                    start: 10,
+                    end: 100
+                },
+                {
+                    show: true,
+                    xAxisIndex: [0],
+                    type: 'slider',
+                    bottom: 10,
+                    start: 10,
+                    end: 100
+                }
+            ],
+            series: [{
+                name: 'Stock Price',
+                type: 'candlestick',
+                data: prices,
+                itemStyle: {
+                    color: upColor,
+                    color0: downColor,
+                    borderColor: upColor,
+                    borderColor0: downColor
+                },
+                tooltip: {
+                    formatter: function(param) {
+                        return `${param[0].name}<br/>Open: ${param[0].data[0]}<br/>Close: ${param[0].data[1]}<br/>Low: ${param[0].data[2]}<br/>High: ${param[0].data[3]}`;
+                    }
+                }
+            }]
+        };
+
+        // Render ECharts
+        var chartDom = document.getElementById('main-chart');
+        var myChart = echarts.init(chartDom);
+        myChart.setOption(option);
+
+        // Responsive
+        window.addEventListener('resize', function () {
+            myChart.resize();
+        });
+        /*]]>*/
+    </script>
+</body>
+</html>

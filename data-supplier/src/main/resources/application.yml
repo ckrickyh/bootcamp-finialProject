@@ -1,0 +1,23 @@
+server:
+  port: 8090
+
+#  //https://finnhub.io/api/v1/quote?symbol=AAPL&token=d1nkeghr01qovv8jr12gd1nkeghr01qovv8jr130
+service:
+  finnhub:
+    host: "finnhub.io"
+    api:
+      quote:
+        version: "api/v1"
+        endpoint: "/quote"
+        key-value: "d1nkeghr01qovv8jr12gd1nkeghr01qovv8jr130"
+        key-value2: "d2qlu0pr01qn21mk465gd2qlu0pr01qn21mk4660"
+        key-value3: "d2qsdqhr01qluccprt70d2qsdqhr01qluccprt7g"
+        key-value4: "d2qsk01r01qluccpsl20d2qsk01r01qluccpsl2g"
+      hisotry:
+        version: "api/v1"
+        endpoint: "profile2"
+        key-value: "d1utrt1r01qp42gvlo90d1utrt1r01qp42gvlo9g"
+        key-value2: "d2qo349r01qn21mkcoi0d2qo349r01qn21mkcoig"
+        key-value3: "d2qse89r01qluccprutgd2qse89r01qluccpruu0"
+        key-value4: "d2qskahr01qluccpsmk0d2qskahr01qluccpsmkg"
+

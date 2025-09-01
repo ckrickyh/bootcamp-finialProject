@@ -1,0 +1,25 @@
+# Docker: postgres-container and redis-container
+
+server:
+  port: 8091
+
+spring:
+  datasource:
+    driverClassName: "org.postgresql.Driver"
+    url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"  # not 5532 As it is located inside the docker, is 5432
+    # url: "jdbc:postgresql://localhost:5432/bootcamp_2504"        # Localhost
+    username: "postgres"
+    password: "admin1234"
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    # properties:
+    #   hibernate:
+    #     dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  data:
+    redis:
+      host: redis-container  # Docker
+      # host: localhost      # Localhost
+      port: 6379

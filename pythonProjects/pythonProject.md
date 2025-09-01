@@ -1,0 +1,1 @@
+pythonEnvPath: /Users/hochakkong/Documents/github/python3/bootcamp-python/projects
