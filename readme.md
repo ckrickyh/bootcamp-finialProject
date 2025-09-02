@@ -1,4 +1,5 @@
-![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)
+-- Click the picture to view the video demonstration --
+[![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)](https://vimeo.com/manage/videos/1115271799)
 
 **Final Project: Stock Heatmap Application**
 =================================
