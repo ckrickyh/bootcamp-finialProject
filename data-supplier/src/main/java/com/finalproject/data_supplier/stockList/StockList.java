@@ -30,12 +30,12 @@ public class StockList {
         ,"DNUT", "COMP", "OPEN", "MARA", "IOVA"
         ,"WMT",  "HD", "AMZN", "NIO", "COST"
         ,"PYPL", "ADBE", "CRM", "ORCL", "IBM"
-        // ,"CAH", "ACGL", "BLL", "CEGVV", "CLX"
-        // ,"CL", "LMT", "CPRT", "CAH", "MDLZ"
-        // ,"FANG",  "EL", "EXC", "LOW", "MAR"
-        // ,"GILD", "HAL", "LMT", "MCD", "NKE"
-        // ,"LHX", "MET", "MO", "MS", "V"
-        // ,"LLY", "ORCL", "JNJ", "PG", "KO"
+        ,"CAH", "ACGL" //"BLL", CEGVV", "CLX",
+        ,"CL", "LMT", "CPRT", "CAH", "MDLZ"
+        ,"FANG",  "EL", "EXC", "LOW", "MAR"
+        ,"GILD", "HAL", "LMT", "MCD", "NKE"
+        ,"LHX", "MET", "MO", "MS", "V"
+        ,"LLY", "ORCL", "JNJ", "PG", "KO"
   ));
 
   public static List<String> getList() {
