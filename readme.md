@@ -1,6 +1,7 @@
 ![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)
 
-Final Project: Stock Heatmap Application
+**Final Project: Stock Heatmap Application**
+=================================
 This application delivers real-time insights into stock performance through an interactive heatmap. Key features include:
 
 **Java & Spring Boot**: The backend utilizes Java and Spring Boot, ensuring a robust and scalable architecture
