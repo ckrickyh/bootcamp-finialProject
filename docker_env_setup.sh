@@ -1,3 +1,6 @@
+# ! Step 0: setup python virtual environment
+source python_env_setup.sh
+
 # ! Step 1: Stop down all docker container
 docker compose stop data-supplier-app ui-app stock-data-app
 # docker compose stop data-provider-app ui-app stock-data-app
@@ -26,6 +29,10 @@ cd ..
 # ! Step 4: docker run (docker-compose is shortcut for docker run)
 docker compose up -d
 
+# ! Step 5: python run
+cd pythonProjects
+python FYPHistory2DB.py
+cd ..
 
-# 乜都唔做，第一樣做這個 docker step
+# !!! when open this project, the first step is to run the below script in terminal
 # source docker_env_setup.sh
