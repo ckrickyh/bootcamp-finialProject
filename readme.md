@@ -1,4 +1,4 @@
--- **Click the picture** to view the video demonstration --
+-- **Click the image** to view the video demonstration --
 [![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)](https://vimeo.com/manage/videos/1115271799)
 
 **Final Project: Stock Heatmap Application**
@@ -26,7 +26,7 @@ Docker-Compose will manage the connections between the Dockerfiles of the three 
 projectPreview/component-diagram.jpg</br>
 
 =================================</br>
--- Click the image below to view the fast-forward video of the heatmap stock changes --</br>
+-- **Click the image** below to view the fast-forward video of the heatmap stock changes --</br>
 [![App Preview](projectPreview/HeatmapPreview.png)](https://vimeo.com/1115589409)</br>
 
 Candlestick chart for a specific stock, illustrating its historical trends
