@@ -23,7 +23,7 @@ Docker-Compose will manage the connections between the Dockerfiles of the three 
 
 =================================</br>
 **Component Diagram**</br>
-projectPreview/component-diagram.jpg</br>
+[![App Preview](projectPreview/component-diagram.jpg)]</br>
 
 =================================</br>
 -- **Click the image** below to view the fast-forward video of the heatmap stock changes --</br>
