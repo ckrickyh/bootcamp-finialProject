@@ -21,13 +21,13 @@ Docker-Compose will manage the connections between the Dockerfiles of the three 
 
 **Python Integration**: In this project, historical daily records are collected using Python, enabling the visualization of trends for selected stocks and offering essential context for investment decisions. Since 2022, approximately 46,000 records have been gathered for about 60 stocks. When Docker runs, this historical data will be fetched from Yahoo and stored in the database.
 
-=================================
-**Component Diagram**
-projectPreview/component-diagram.jpg
+=================================</br>
+**Component Diagram**</br>
+projectPreview/component-diagram.jpg</br>
 
-=================================
---Click the image below to view the fast-forward video of the heatmap stock changes--
-[![App Preview](projectPreview/HeatmapPreview.png)](https://vimeo.com/1115589409)
+=================================</br>
+-- Click the image below to view the fast-forward video of the heatmap stock changes --</br>
+[![App Preview](projectPreview/HeatmapPreview.png)](https://vimeo.com/1115589409)</br>
 
-Candlestick chart for a specific stock, illustrating its historical trends.
-projectPreview/CandleStickPreview.png
+Candlestick chart for a specific stock, illustrating its historical trends
+[![App Preview](projectPreview/CandleStickPreview.png)]
