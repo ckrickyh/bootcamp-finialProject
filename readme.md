@@ -23,11 +23,11 @@ Docker-Compose will manage the connections between the Dockerfiles of the three 
 
 =================================</br>
 **Component Diagram**</br>
-[![App Preview](projectPreview/component-diagram.jpg)]</br>
+![App Preview](projectPreview/component-diagram.jpg)</br>
 
 =================================</br>
 -- **Click the image** below to view the fast-forward video of the heatmap stock changes --</br>
 [![App Preview](projectPreview/HeatmapPreview.png)](https://vimeo.com/1115589409)</br>
 
-Candlestick chart for a specific stock, illustrating its historical trends
-[![App Preview](projectPreview/CandleStickPreview.png)]
+Candlestick chart for a specific stock, illustrating its historical trends</br>
+![App Preview](projectPreview/CandleStickPreview.png)
