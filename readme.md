@@ -13,7 +13,9 @@ This application provides real-time insights into stock performance through an i
 
 3. User Interface: This microservice provides a front-end interface for data visualization, utilizing the ECharts library for interactive and dynamic charts. This allows users to effectively analyze and interpret stock data.
 
-Docker-Compose will manage the connections between the Dockerfiles of the three microservices. Postman is utilized to test the functionality of the microservices. JSON is utilized as a common data format to facilitate communication between these services. Each microservice transforms data transfer objects into entities for interactions with the database. This microservices architecture is vital, as it enables changes to be made to one service without impacting the others. For example, switching the data source from Finnhub to Yahoo or updating the user interface will not modify the program of other microservices. Exposed localhost 8102 will be used 
+Docker-Compose manages the connections between the Dockerfiles of three microservices. During app development, Postman is utilized to test their functionality. JSON acts as a common data format, enabling seamless communication among the services. Each microservice transforms data transfer objects into entities for database interactions. Port 8102 is exposed for external access, while port 8092 is designated for internal communication.
+
+This microservices architecture is vital because it allows changes to one service without impacting the others. For example, switching the data source from Finnhub to Yahoo or updating the user interface does not affect the other microservices.
 
 **Redis**: Fast data retrieval is facilitated by Redis, which efficiently manages stable data that changes infrequently. The Redis cache is cleared every 30 seconds to reflect real-time updates. In a practical scenario, where stock history is relevant, data retention would be adjusted to 24 hours, after which the system queries the database to refresh the Redis cache.
 
