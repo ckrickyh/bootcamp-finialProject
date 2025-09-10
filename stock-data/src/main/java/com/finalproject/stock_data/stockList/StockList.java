@@ -37,7 +37,7 @@ public class StockList {
         ,"FANG",  "EL", "EXC", "LOW", "MAR"
         ,"GILD", "HAL", "LMT", "MCD", "NKE"
         ,"LHX", "MET", "MO", "MS", "V"
-        ,"LLY", "ORCL", "JNJ", "PG", "KO"
+        ,"LLY", "JNJ", "PG", "KO"
         ,"SMCI", "IREN", "WFC", "XOM", "APH"
     ));
 

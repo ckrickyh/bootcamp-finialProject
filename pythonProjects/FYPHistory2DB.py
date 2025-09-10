@@ -26,7 +26,7 @@ stockLst = [
         ,"FANG",  "EL", "EXC", "LOW", "MAR"
         ,"GILD", "HAL", "LMT", "MCD", "NKE"
         ,"LHX", "MET", "MO", "MS", "V"
-        ,"LLY", "ORCL", "JNJ", "PG", "KO"
+        ,"LLY", "JNJ", "PG", "KO"
         ,"TSM", "PDD", "CRWV", "PLTR", "HOOD"
         ,"SMCI", "IREN", "WFC", "XOM", "APH"
       ]
