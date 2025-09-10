@@ -32,6 +32,8 @@ public class QuoteServiceImpl implements QuoteService{
   private String keyValue3;
   @Value("${service.finnhub.api.quote.key-value4}")
   private String keyValue4;
+  @Value("${service.finnhub.api.quote.key-value5}")
+  private String keyValue5;
   @Value("${service.finnhub.api.quote.endpoint}")
   private String endPoint;
   @Value("${service.finnhub.api.quote.version}")
@@ -50,7 +52,8 @@ public class QuoteServiceImpl implements QuoteService{
   private static final String keyValueH2 = "d2qo349r01qn21mkcoi0d2qo349r01qn21mkcoig";
   private static final String keyValueH3 = "d2qse89r01qluccprutgd2qse89r01qluccpruu0";
   private static final String keyValueH4 = "d2qskahr01qluccpsmk0d2qskahr01qluccpsmkg";
-  String[] apiKeysHistory = {keyValueH1, keyValueH2, keyValueH3, keyValueH4};
+  private static final String keyValueH5 = "d30i1ipr01qnmrsek55gd30i1ipr01qnmrsek560";
+  String[] apiKeysHistory = {keyValueH1, keyValueH2, keyValueH3, keyValueH4, keyValueH5};
   private static final String Profile_URL = "https://finnhub.io/api/v1/stock/profile2";
   //https://finnhub.io/api/v1/stock/profile2?symbol=AAPL&token=key-value
 

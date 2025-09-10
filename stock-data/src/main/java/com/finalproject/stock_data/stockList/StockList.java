@@ -11,19 +11,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StockList {
 
-    public static final List<String> getListByCsv(String filePath) {
-      // /Users/hochakkong/Documents/github/finalproject/stock-data/src/main/java/com/finalproject/stock_data/stockList/StockList.csv
-      List<String> lines = new ArrayList<>();
-      try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-          String line;
-          while ((line = br.readLine()) != null) {
-              lines.add(line);
-          }
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
-      return lines; //List<String>
-    }
+    // public static final List<String> getListByCsv(String filePath) {
+    //   // /Users/hochakkong/Documents/github/finalproject/stock-data/src/main/java/com/finalproject/stock_data/stockList/StockList.csv
+    //   List<String> lines = new ArrayList<>();
+    //   try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+    //       String line;
+    //       while ((line = br.readLine()) != null) {
+    //           lines.add(line);
+    //       }
+    //   } catch (IOException e) {
+    //       e.printStackTrace();
+    //   }
+    //   return lines; //List<String>
+    // }
 
     public static final List<String> usCodes = new ArrayList<>(Arrays.asList(
        "TSLA", "NVDA", "AAPL", "META", "GOOGL",
@@ -32,12 +32,13 @@ public class StockList {
         ,"DNUT", "COMP", "OPEN", "MARA", "IOVA"
         ,"WMT",  "HD", "AMZN", "NIO", "COST"
         ,"PYPL", "ADBE", "CRM", "ORCL", "IBM"
-        ,"CAH", "ACGL" //"BLL", CEGVV", "CLX",
-        ,"CL", "LMT", "CPRT", "CAH", "MDLZ"
+        ,"CAH", "ACGL", "PLTR", "HOOD"
+        ,"CL", "TECK", "CPRT", "CAH", "MDLZ"
         ,"FANG",  "EL", "EXC", "LOW", "MAR"
         ,"GILD", "HAL", "LMT", "MCD", "NKE"
         ,"LHX", "MET", "MO", "MS", "V"
         ,"LLY", "ORCL", "JNJ", "PG", "KO"
+        ,"SMCI", "IREN", "WFC", "XOM", "APH"
     ));
 
     public static List<String> getList() {

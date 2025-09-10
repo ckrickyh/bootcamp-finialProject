@@ -4,7 +4,7 @@ services:
     container_name: postgres-container
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin1234
+      POSTGRES_PASSWORD: Admin!1234 #local docker: admin1234; google cloud: Admin!1234
       POSTGRES_DB: bootcamp_2504
       PGDATA: /var/lib/postgresql/data/pgdata15
     networks:

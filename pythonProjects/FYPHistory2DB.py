@@ -22,11 +22,13 @@ stockLst = [
         ,"WMT",  "HD", "AMZN", "NIO", "COST"
         ,"PYPL", "ADBE", "CRM", "ORCL", "IBM"
         ,"CAH", "ACGL", "BLL", "CEGVV", "CLX"
-        ,"CL", "LMT", "CPRT", "CAH", "MDLZ"
+        ,"CL", "TECK", "CPRT", "CAH", "MDLZ"
         ,"FANG",  "EL", "EXC", "LOW", "MAR"
         ,"GILD", "HAL", "LMT", "MCD", "NKE"
         ,"LHX", "MET", "MO", "MS", "V"
         ,"LLY", "ORCL", "JNJ", "PG", "KO"
+        ,"TSM", "PDD", "CRWV", "PLTR", "HOOD"
+        ,"SMCI", "IREN", "WFC", "XOM", "APH"
       ]
 
 start_unix_date = "1657237004"
@@ -134,8 +136,9 @@ from sqlalchemy import Table, Column, MetaData, Integer, String, Date, Float, Bi
 # Docker
 # bbootcamp_engine = create_engine("postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504")
 
+#=========== local and local docker=======================
 engineLst = ["postgresql+psycopg2://postgres:admin1234@localhost:5432/bootcamp_2504",
-             "postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504"] #5432, 5532
+            "postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504"] #5432, 5532
 
 for engine in engineLst:
   bootcamp_engine = create_engine(engine)

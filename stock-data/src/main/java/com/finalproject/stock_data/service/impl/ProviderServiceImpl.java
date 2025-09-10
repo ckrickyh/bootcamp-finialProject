@@ -58,7 +58,7 @@ public class ProviderServiceImpl implements ProviderService{
       .build()
       .toUriString();
     // String url = "http://localhost:8090/us/stocks"; //localhost
-    System.out.println("rgbesrbdvfafaad" + url);
+    System.out.println("getFinnhubData() from data-supplier-app: " + url);
 
     FinnhubDTO[] response =  this.restTemplate.getForObject(url, FinnhubDTO[].class);
     

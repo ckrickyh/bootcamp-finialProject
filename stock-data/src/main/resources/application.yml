@@ -6,10 +6,11 @@ server:
 spring:
   datasource:
     driverClassName: "org.postgresql.Driver"
-    url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"  # not 5532 As it is located inside the docker, is 5432
+    url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"
+    # "jdbc:postgresql://postgres-container:5432/bootcamp_2504"  # not 5532 As it is located inside the docker, is 5432
     # url: "jdbc:postgresql://localhost:5432/bootcamp_2504"        # Localhost
     username: "postgres"
-    password: "admin1234"
+    password: "admin1234" # local docker: "admin1234"
   jpa:
     show-sql: true
     hibernate:

@@ -5,7 +5,6 @@ source python_env_setup.sh
 docker compose stop data-supplier-app ui-app stock-data-app
 # docker compose stop data-provider-app ui-app stock-data-app
 
-
 # ! Step 2: Remove old container if any
 # docker rm data-provider-app
 docker rm data-supplier-app
