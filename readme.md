@@ -1,9 +1,14 @@
--- **Click the image** to view the video demonstration --
+# Final Project: Stock Heatmap Application
+
+Welcome to my final project, which highlights the skills I developed during the bootcamp. This application delivers real-time insights into stock performance through an interactive heatmap that features 60 different stocks. Built using Java and Spring Boot, it employs a microservices architecture that ensures both flexibility and reliability.
+
+-- **Video demonstration** -- <br/>
+https://vimeo.com/manage/videos/1115271799 <br/>
 [![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)](https://vimeo.com/manage/videos/1115271799)
 
 **Final Project: Stock Heatmap Application**
 =================================
-This application provides real-time insights into stock performance through an interactive heatmap featuring 60 stocks. Key features include:
+This application provides real-time insights into stock performance through an interactive heatmap. Key features include:
 
 **Java & Spring Boot with micro-services**: This project utilizes Java and Spring Boot for the backend, providing a robust and scalable architecture. It comprises three microservices that work together to implement the business logic:
 
@@ -28,7 +33,8 @@ This microservices architecture is vital because it allows changes to one servic
 ![App Preview](projectPreview/component-diagram.jpg)</br>
 
 =================================</br>
--- **Click the image** below to view the fast-forward video of the heatmap stock changes --</br>
+https://vimeo.com/1115589409 <br/>
+-- A fast-forward video showing app refreshment every 30 seconds--</br>
 [![App Preview](projectPreview/HeatmapPreview.png)](https://vimeo.com/1115589409)</br>
 
 Candlestick chart for a specific stock, illustrating its historical trends</br>
