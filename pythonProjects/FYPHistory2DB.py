@@ -109,7 +109,7 @@ dfAll
 # ## df_logo
 
 # %%
-df_logo = pd.read_csv("Stock_list.csv")
+df_logo = pd.read_csv("Stock_List.csv")
 df_logo["symbol_link"] = "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/"+ df_logo["symbol"]+".png"
 # df_logo["symbol_link"] = "https://eodhd.com/img/logos/US/"+ df_logo["symbol"]+".png"
 

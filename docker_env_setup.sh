@@ -25,7 +25,12 @@ mvn clean install
 docker build -t ui:0.0.1 -f Dockerfile .
 cd ..
 
-# ! Step 4: docker run (docker-compose is shortcut for docker run)
+# ! Step 3.1: create_db localhost 5432 for local, 5532 for Docker
+cd pythonProjects
+python create_bootcamp_db.py
+cd ..
+
+# ! Step 4: docker run (docker-compose is shortcut for docker run, docker-compose.yml)
 docker compose up -d
 
 # ! Step 5: python run
