@@ -2,6 +2,7 @@
 [![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)](https://vimeo.com/manage/videos/1115271799)
 
 **Step of deploying application**
+===============================
 0. Docker installation
 1. git clone the project
 2. cd to the project folder
