@@ -1,6 +1,12 @@
 -- **Click the image** to view the video demonstration --
 [![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)](https://vimeo.com/manage/videos/1115271799)
 
+**Step of deploying application**
+0. Docker installation
+1. git clone the project
+2. cd to the project folder
+3. run `docker_env_setup.sh` to build and run the docker containers
+
 **Final Project: Stock Heatmap Application**
 =================================
 This application provides real-time insights into stock performance through an interactive heatmap featuring 60 stocks. Key features include:
