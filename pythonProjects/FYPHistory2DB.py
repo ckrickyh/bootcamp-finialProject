@@ -137,8 +137,8 @@ from sqlalchemy import Table, Column, MetaData, Integer, String, Date, Float, Bi
 # bbootcamp_engine = create_engine("postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504")
 
 #=========== local and local docker=======================
-engineLst = ["postgresql+psycopg2://postgres:admin1234@localhost:5432/bootcamp_2504",
-            "postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504"] #5432, 5532
+engineLst = ["postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504",]
+            #["postgresql+psycopg2://postgres:admin1234@localhost:5432/bootcamp_2504"] #5532, 5432
 
 for engine in engineLst:
   bootcamp_engine = create_engine(engine)
