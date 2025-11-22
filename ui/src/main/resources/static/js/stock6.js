@@ -201,7 +201,8 @@ myChart.setOption(option);
 myChart.on('dblclick', function(params) {
     const code = params.name.split(" ")[0];
     // window.open('http://localhost:8092/us/historystick/' + encodeURIComponent(code), "code", "location=0,width=600,height=400").focus();
-    window.open('http://localhost:8102/us/historystick/' + encodeURIComponent(code), "code", "location=0,width=600,height=400").focus();
+    //window.open('http://localhost:8102/us/historystick/' + encodeURIComponent(code), "code", "location=0,width=600,height=400").focus();
+    window.open(baseUrl + '/us/historystick/' + encodeURIComponent(code), "code", "location=0,width=600,height=400").focus();
     // not ok http://ui-app:8102/us/historystick/'
 
     // window.open("url","winName","location=0,width=300,height=214").focus();
