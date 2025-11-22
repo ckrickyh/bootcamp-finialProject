@@ -32,7 +32,9 @@
     
     <script th:inline="javascript">
         let stocks = /*[[${(stocks)}]]*/[];
+        let baseUrl = /*[[${baseUrl}]]*/ 'http://localhost:8102'; // Pass baseUrl
         console.log(stocks); // Changed from coinList to stocks
+        console.log(baseUrl);
     </script>
 
     <!-- External JS file -->

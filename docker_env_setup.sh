@@ -1,3 +1,17 @@
+#Google Cloud Platform
+# Fetch the VM's external IP address
+EXTERNAL_IP=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
+
+# Create/update a .env file that docker-compose will automatically read
+echo "EXTERNAL_IP=${EXTERNAL_IP}" > .env
+
+# Use the IP in docker-compose
+# Note: Using env vars directly is easier if docker-compose.yml references them
+# For example, if docker-compose.yml has:
+#   environment:
+#     - BASE_URL=http://${EXTERNAL_IP}:8102
+
+
 # ! Step 0: setup python virtual environment
 source python_env_setup.sh
 

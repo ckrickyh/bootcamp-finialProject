@@ -86,7 +86,7 @@ let option = {
             if (params && params.data && params.data.currentPrice != null) {
                 const sign = params.data.sign > 0 ? '▲' : params.data.sign < 0 ? '▼' : '-';
                 const code = encodeURIComponent(params.name);
-                const url = 'http://localhost:8102/us/historystick/' + code; // wrong http://localhost:8092/us/historystick/' + code; correct 'http://localhost:8102/us/historystick/' + code;
+                const url = baseUrl + '/us/historystick/' + code; // wrong http://localhost:8092/us/historystick/' + code; correct 'http://localhost:8102/us/historystick/' + code;
 
                 return `
                     <div style="background: rgba(0, 0, 0, 0.1); padding: 10px; border-radius: 5px;">

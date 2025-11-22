@@ -2,6 +2,7 @@ package com.finalproject.ui.view.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import com.finalproject.ui.dto.HistoryDTO;
@@ -13,6 +14,9 @@ import com.finalproject.ui.view.MainPageOperation;
 public class MainPageController implements MainPageOperation {
   @Autowired
   UiService uiService;
+
+  @Value("${BASE_URL:http://localhost:8102}") // Inject BASE_URL from env/properties, with a localhost default
+  private String baseUrl;
 
   @Override
   public String loadStockTable(Model model) {
