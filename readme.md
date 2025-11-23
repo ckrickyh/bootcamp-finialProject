@@ -47,15 +47,17 @@ This microservices architecture allows changes to one service without impacting 
  2     | Service    | ✅ Repositories, Other Services, External APIs | ❌ Controllers                       
  3     | Repository | ✅ Database (via JPA)                          | ❌ Services, Controllers   
 
-Separation of concerns:<br>
+*Separation of concerns:*<br>
   - Controllers handle HTTP requests/responses<br>
   - Services contain business logic<br>
   - Repositories handle database operations<br>
-Dependency injection:<br>
+
+*Dependency injection:*<br>
   - @Autowired for dependency injection ("Hey Spring, please give me this object", reducing works in "new" an object = Creates an instance of it automatically)<br>
   - Controllers inject Services<br>
   - Services inject Repositories<br>
-Microservices communication:<br>
+
+*Microservices communication:*<br>
   - Services communicate via RestTemplate (HTTP)<br>
   - No direct database access across services<br>
 
