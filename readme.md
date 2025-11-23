@@ -2,7 +2,7 @@
 [![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)](https://vimeo.com/manage/videos/1115271799)
 
 US Stock Heatmap Link: http://34.169.230.10:8102/us/heatmap<br>
-Video Back-End Demonstration: https://vimeo.com/manage/videos/1115271799<br><br>
+Video Back-End Demonstration: https://vimeo.com/manage/videos/1115271799<br>
 
 **Step of Deploying Application**
 ===============================
@@ -62,11 +62,11 @@ This microservices architecture allows changes to one service without impacting 
   - No direct database access across services<br>
 
 **Advantage of this Architecture**<br>
-Separation of concerns: Each layer has a single responsibility<br>
-Testability:            Easy to mock services/repositories<br>
-Maintainability:        Changes in one layer don't break others<br>
-Reusability:            Services can be used by multiple controllers<br>
-Security:               Controllers don't expose database details<br>
+*Separation of concerns*: Each layer has a single responsibility<br>
+*Testability*:            Easy to mock services/repositories<br>
+*Maintainability*:        Changes in one layer don't break others<br>
+*Reusability*:            Services can be used by multiple controllers<br>
+*Security*:               Controllers don't expose database details<br>
 
 **Docker**
 Docker-Compose manages the connections between the Dockerfiles of three microservices. During app development, Postman is utilized to test their functionality. JSON acts as a common data format, enabling seamless communication among the services. Each microservice transforms data transfer objects into entities for database interactions. Port 8102 is exposed for external access, while port 8092 is designated for internal micro-service communication.
