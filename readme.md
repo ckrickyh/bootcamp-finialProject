@@ -15,9 +15,9 @@ Video Back-End Present: https://vimeo.com/manage/videos/1115271799<br><br>
 =================================
 This application provides real-time insights into stock performance through an interactive heatmap featuring 60 stocks. Stock data is fetched from Finnhub every 30 seconds, ensuring users have access to the latest information. Key features include :
 
-**Java & Spring Boot with micro-services**: This project utilizes Java and Spring Boot for the backend, providing a robust and scalable architecture. It comprises three microservices that work together to implement the business logic, where DTO and Entity serve as important medium to transfrom information between API message (DTO) <-> Database data (Entity):
+**Java & Spring Boot with micro-services**: This project utilizes Java and Spring Boot for the backend, providing a robust and scalable architecture. It comprises three microservices that work together to implement the business logic, where DTO and Entity serve as important medium to transfrom information between API message (DTO) <-> Database data (Entity):<br>
 
-*Difference between DTO & Entty*
+*Difference between DTO & Entty*<br>
  **#** | **Aspect**    | **Entity**                               | **DTO**                      
 -------|---------------|------------------------------------------|------------------------------
  1     | Location      | Database layer                           | API/Service layer            
@@ -28,15 +28,14 @@ This application provides real-time insights into stock performance through an i
  6     | Used By       | Repository, Service (internal)           | Controller, API responses 
 
 
-**Microservices Architecture**: The application is structured into three distinct microservices, each responsible for specific functionalities:
-1. Data Supplier: This microservice fetches real-time data from Finnhub using 4 API keys, with each key enabling 15 stock data retrievals.
+**Microservices Architecture**: The application is structured into three distinct microservices, each responsible for specific functionalities:<br>
+1. Data Supplier: This microservice fetches real-time data from Finnhub using 4 API keys, with each key enabling 15 stock data retrievals.<br>
 
-2. Stock Data: This service obtains real-time data from the Data Supplier and stores historical data in a PostgreSQL database.
+2. Stock Data: This service obtains real-time data from the Data Supplier and stores historical data in a PostgreSQL database.<br>
 
 3. User Interface: This microservice provides a front-end interface for data visualization, utilizing the ECharts library for interactive and dynamic charts. This allows users to effectively analyze and interpret stock data.<br>
 
-This microservices architecture allows changes to one service without impacting the others. For example, switching the data source from Finnhub to Yahoo or updating the user interface does not affect the other microservices.
-
+This microservices architecture allows changes to one service without impacting the others. For example, switching the data source from Finnhub to Yahoo or updating the user interface does not affect the other microservices.<br>
 
 *The 3-Layer Architecture*<br>
 ![App Preview](projectPreview/MicroService.png)</br></br>
@@ -48,19 +47,18 @@ This microservices architecture allows changes to one service without impacting 
  2     | Service    | ✅ Repositories, Other Services, External APIs | ❌ Controllers                       
  3     | Repository | ✅ Database (via JPA)                          | ❌ Services, Controllers   
 
-Separation of concerns:
-  - Controllers handle HTTP requests/responses
-  - Services contain business logic
-  - Repositories handle database operations
-Dependency injection:
-  - @Autowired for dependency injection ("Hey Spring, please give me this object", reducing works in "new" an object = Creates an instance of it automatically)
-  - Controllers inject Services
-  - Services inject Repositories
-Microservices communication:
-  - Services communicate via RestTemplate (HTTP)
-  - No direct database access across services
+Separation of concerns:<br>
+  - Controllers handle HTTP requests/responses<br>
+  - Services contain business logic<br>
+  - Repositories handle database operations<br>
+Dependency injection:<br>
+  - @Autowired for dependency injection ("Hey Spring, please give me this object", reducing works in "new" an object = Creates an instance of it automatically)<br>
+  - Controllers inject Services<br>
+  - Services inject Repositories<br>
+Microservices communication:<br>
+  - Services communicate via RestTemplate (HTTP)<br>
+  - No direct database access across services<br>
 
- 
 **Advantage of this Architecture**<br>
 Separation of concerns: Each layer has a single responsibility<br>
 Testability:            Easy to mock services/repositories<br>
@@ -73,11 +71,11 @@ Docker-Compose manages the connections between the Dockerfiles of three microser
 
 **Redis**: Fast data retrieval is facilitated by Redis, which efficiently manages stable data that changes infrequently. The Redis cache is cleared every 30 seconds to reflect real-time updates. In a practical scenario, where stock history is relevant, data retention would be adjusted to 24 hours, after which the system queries the database to refresh the Redis cache. <br>
 
-*Without Redis*
+*Without Redis*<br>
 User Request → Controller → Service → Database (PostgreSQL) → Return Data<br>
                                     ⬆️<br>
                       Slow! Every time queries DB  <br><br> 
-*With Redis*
+*With Redis*<br>
 User Request → Controller → RedisService → Redis Cache → Return Data (FAST!)<br>
       ⬇️ (if not found)<br>
 Database (PostgreSQL) → Save to Redis → Return Data<br>
