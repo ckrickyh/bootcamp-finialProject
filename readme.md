@@ -125,7 +125,7 @@ Docker-Compose manages the connections between the Dockerfiles of three microser
 *Without Redis*
 User Request → Controller → Service → Database (PostgreSQL) → Return Data
                                     ⬆️
-                              Slow! Every time queries DB  <br><br>
+                              Slow! Every time queries DB  <br><br> 
 *With Redis*
 User Request → Controller → RedisService → Redis Cache → Return Data (FAST!)
       ⬇️ (if not found)
@@ -174,6 +174,132 @@ Database (PostgreSQL) → Save to Redis → Return Data<br>
 | │ Return data      │                                            |
 | └──────────────────┘                                            |
 
+
+<table>
+    <tr>
+        <td>*Redis Work flow*</td>
+    </tr>
+    <tr>
+        <td>┌─────────────────────────────────────────────────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│  User requests: GET /us/history/AAPL                        │</td>
+    </tr>
+    <tr>
+        <td>└─────────────────────────────────────────────────────────────┘</td>
+    </tr>
+    <tr>
+        <td>│</td>
+    </tr>
+    <tr>
+        <td>▼</td>
+    </tr>
+    <tr>
+        <td>┌─────────────────────────────────────────────────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│  ProviderController.getUsHistory(&quot;AAPL&quot;)                    │</td>
+    </tr>
+    <tr>
+        <td>│  └─&gt; Calls: redisService.getCache(&quot;AAPL&quot;)                   │</td>
+    </tr>
+    <tr>
+        <td>└─────────────────────────────────────────────────────────────┘</td>
+    </tr>
+    <tr>
+        <td>│</td>
+    </tr>
+    <tr>
+        <td>▼</td>
+    </tr>
+    <tr>
+        <td>┌─────────────────────────────────────────────────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│  RedisService.getCache(&quot;AAPL&quot;)                              │</td>
+    </tr>
+    <tr>
+        <td>│  ┌──────────────────────────────────────────────────────┐   │</td>
+    </tr>
+    <tr>
+        <td>│  │  Check Redis: &quot;stock-AAPL&quot;                           │   │</td>
+    </tr>
+    <tr>
+        <td>│  └──────────────────────────────────────────────────────┘   │</td>
+    </tr>
+    <tr>
+        <td>└─────────────────────────────────────────────────────────────┘</td>
+    </tr>
+    <tr>
+        <td>│</td>
+    </tr>
+    <tr>
+        <td>┌───────────┴───────────┐</td>
+    </tr>
+    <tr>
+        <td>│                       │</td>
+    </tr>
+    <tr>
+        <td>FOUND IN REDIS             NOT FOUND</td>
+    </tr>
+    <tr>
+        <td>│                       │</td>
+    </tr>
+    <tr>
+        <td>▼                       ▼</td>
+    </tr>
+    <tr>
+        <td>┌──────────────────┐    ┌──────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│ Return cached    │    │ Query PostgreSQL │</td>
+    </tr>
+    <tr>
+        <td>│ data (FAST!)     │    │ Database (SLOW)  │</td>
+    </tr>
+    <tr>
+        <td>│                  │    │                  │</td>
+    </tr>
+    <tr>
+        <td>│ ⚡ 1-5ms          │    │ ⏱️ 50-200ms      │</td>
+    </tr>
+    <tr>
+        <td>└──────────────────┘    └──────────────────┘</td>
+    </tr>
+    <tr>
+        <td>│</td>
+    </tr>
+    <tr>
+        <td>▼</td>
+    </tr>
+    <tr>
+        <td>┌──────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│ Save to Redis    │</td>
+    </tr>
+    <tr>
+        <td>│ (30 sec expiry)  │</td>
+    </tr>
+    <tr>
+        <td>└──────────────────┘</td>
+    </tr>
+    <tr>
+        <td>│</td>
+    </tr>
+    <tr>
+        <td>▼</td>
+    </tr>
+    <tr>
+        <td>┌──────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│ Return data      │</td>
+    </tr>
+    <tr>
+        <td>└──────────────────┘</td>
+    </tr>
+</table>
 
 **Python Integration**: In this project, historical daily records are collected using Python, enabling the visualization of trends for selected stocks and offering essential context for investment decisions. Since 2022, approximately 46,000 records have been gathered for about 60 stocks. When Docker runs, this historical data will be fetched from Yahoo and stored in the database.
 
