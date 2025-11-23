@@ -68,10 +68,8 @@ This microservices architecture allows changes to one service without impacting 
 *Reusability*:            Services can be used by multiple controllers<br>
 *Security*:               Controllers don't expose database details<br>
 
-**Docker**
-Docker-Compose manages the connections between the Dockerfiles of three microservices. During app development, Postman is utilized to test their functionality. JSON acts as a common data format, enabling seamless communication among the services. Each microservice transforms data transfer objects into entities for database interactions. Port 8102 is exposed for external access, while port 8092 is designated for internal micro-service communication.
-
-**Redis**: Fast data retrieval is facilitated by Redis, which efficiently manages stable data that changes infrequently. The Redis cache is cleared every 30 seconds to reflect real-time updates. In a practical scenario, where stock history is relevant, data retention would be adjusted to 24 hours, after which the system queries the database to refresh the Redis cache. <br>
+**Redis**<br>
+Fast data retrieval is facilitated by Redis, which efficiently manages stable data that changes infrequently. The Redis cache is cleared every 30 seconds to reflect real-time updates. In a practical scenario, where stock history is relevant, data retention would be adjusted to 24 hours, after which the system queries the database to refresh the Redis cache. <br>
 
 *Without Redis*<br>
 User Request → Controller → Service → Database (PostgreSQL) → Return Data<br>
@@ -83,8 +81,11 @@ User Request → Controller → RedisService → Redis Cache → Return Data (FA
 Database (PostgreSQL) → Save to Redis → Return Data<br>
 ![App Preview](projectPreview/RedisWorkFlow.png)</br>
 
+**Python Integration**<br>
+In this project, historical daily records are collected using Python, enabling the visualization of trends for selected stocks and offering essential context for investment decisions. Since 2022, approximately 46,000 records have been gathered for about 60 stocks. When Docker runs, this historical data will be fetched from Yahoo and stored in the database.<br>
 
-**Python Integration**: In this project, historical daily records are collected using Python, enabling the visualization of trends for selected stocks and offering essential context for investment decisions. Since 2022, approximately 46,000 records have been gathered for about 60 stocks. When Docker runs, this historical data will be fetched from Yahoo and stored in the database.
+**Docker**<br>
+Docker-Compose manages the connections between the Dockerfiles of three microservices. During app development, Postman is utilized to test their functionality. JSON acts as a common data format, enabling seamless communication among the services. Each microservice transforms data transfer objects into entities for database interactions. Port 8102 is exposed for external access, while port 8092 is designated for internal micro-service communication.<br>
 
 =================================</br>
 **Component Diagram**</br>
