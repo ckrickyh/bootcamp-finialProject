@@ -38,57 +38,8 @@ This application provides real-time insights into stock performance through an i
 This microservices architecture allows changes to one service without impacting the others. For example, switching the data source from Finnhub to Yahoo or updating the user interface does not affect the other microservices.
 
 
-*The 3-Layer Architecture*
-┌─────────────────────────────────────────────────────────────────┐
-│                    UI SERVICE (Port 8092)                       │
-├─────────────────────────────────────────────────────────────────┤
-│  Controllers:                                                   │
-│  ├─ MainPageController (@Controller) → returns HTML views       │
-│  └─ ProviderController (@RestController) → returns JSON         │
-│                                                                 │
-│  Services:                                                      │
-│  └─ UiService → Calls stock-data-app via RestTemplate           │
-│     (No Repository - acts as API gateway)                       │
-└─────────────────────────────────────────────────────────────────┘
-                            │
-                            │ HTTP (RestTemplate)
-                            ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                STOCK-DATA SERVICE (Port 8091)                   │
-├─────────────────────────────────────────────────────────────────┤
-│  Controllers:                                                   │
-│  └─ ProviderController (@RestController)                        │
-│     ├─ getFinnhub() → calls ProviderService                     │
-│     ├─ getUsHistory() → calls RedisService                      │
-│     └─ getProfile() → calls ProviderService                     │
-│                                                                 │
-│  Services:                                                      │
-│  ├─ ProviderService → Business logic                            │
-│  │  ├─ Calls data-supplier-app via RestTemplate                 │
-│  │  └─ Uses Repositories for database operations                │
-│  └─ RedisService → Caching layer                                │
-│                                                                 │
-│  Repositories:                                                  │
-│  ├─ FinnhubRepository → JPA operations on FinnhubEntity         │
-│  ├─ HistoryRepository → JPA operations on HistoryEntity         │
-│  └─ ProfileRepository → JPA operations on ProfileEntity         │
-└─────────────────────────────────────────────────────────────────┘
-                            │
-                            │ HTTP (RestTemplate)
-                            ▼
-┌─────────────────────────────────────────────────────────────────┐
-│              DATA-SUPPLIER SERVICE (Port 8090)                  │
-├─────────────────────────────────────────────────────────────────┤
-│  Controllers:                                                   │
-│  └─ QuoteController (@RestController)                           │
-│     ├─ getUsStock() → calls QuoteService                        │
-│     └─ getUsProfile() → calls QuoteService                      │
-│                                                                 │
-│  Services:                                                      │
-│  └─ QuoteService → Fetches data from external Finnhub API       │
-│     (No Repository - external API calls only)                   │
-└─────────────────────────────────────────────────────────────────┘
-
+*The 3-Layer Architecture*<br>
+![App Preview](projectPreview/MicroService.png)</br></br>
 
 **Rule of Micro-service**<br>
  **#** | **Layer**  | **Can Access**                                | **Cannot Access**                   
@@ -111,12 +62,11 @@ Microservices communication:
 
  
 **Advantage of this Architecture**<br>
-Separation of concerns |Each layer has a single responsibility
-Testability:           |Easy to mock services/repositories
-Maintainability:       |Changes in one layer don't break others
-Reusability:           |Services can be used by multiple controllers
-Security:              |Controllers don't expose database details
-<br>
+Separation of concerns: Each layer has a single responsibility<br>
+Testability:            Easy to mock services/repositories<br>
+Maintainability:        Changes in one layer don't break others<br>
+Reusability:            Services can be used by multiple controllers<br>
+Security:               Controllers don't expose database details<br>
 
 **Docker**
 Docker-Compose manages the connections between the Dockerfiles of three microservices. During app development, Postman is utilized to test their functionality. JSON acts as a common data format, enabling seamless communication among the services. Each microservice transforms data transfer objects into entities for database interactions. Port 8102 is exposed for external access, while port 8092 is designated for internal micro-service communication.
@@ -126,12 +76,11 @@ Docker-Compose manages the connections between the Dockerfiles of three microser
 *Without Redis*
 User Request → Controller → Service → Database (PostgreSQL) → Return Data
                                     ⬆️
-                              Slow! Every time queries DB  <br><br> 
+                      Slow! Every time queries DB  <br><br> 
 *With Redis*
 User Request → Controller → RedisService → Redis Cache → Return Data (FAST!)
       ⬇️ (if not found)
 Database (PostgreSQL) → Save to Redis → Return Data<br>
-
 ![App Preview](projectPreview/RedisWorkFlow.png)</br>
 
 
