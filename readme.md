@@ -175,49 +175,131 @@ Database (PostgreSQL) → Save to Redis → Return Data<br>
 | └──────────────────┘                                            |
 
 
-<?xml version="1.0" encoding="UTF-8" ?>
-<dataset>
-  <record><*Redis Work flow*>┌─────────────────────────────────────────────────────────────┐</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│  User requests: GET /us/history/AAPL                        │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>└─────────────────────────────────────────────────────────────┘</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│</*Redis Work flow*></record>
-  <record><*Redis Work flow*>▼</*Redis Work flow*></record>
-  <record><*Redis Work flow*>┌─────────────────────────────────────────────────────────────┐</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│  ProviderController.getUsHistory(&quot;AAPL&quot;)                    │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│  └─&gt; Calls: redisService.getCache(&quot;AAPL&quot;)                   │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>└─────────────────────────────────────────────────────────────┘</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│</*Redis Work flow*></record>
-  <record><*Redis Work flow*>▼</*Redis Work flow*></record>
-  <record><*Redis Work flow*>┌─────────────────────────────────────────────────────────────┐</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│  RedisService.getCache(&quot;AAPL&quot;)                              │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│  ┌──────────────────────────────────────────────────────┐   │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│  │  Check Redis: &quot;stock-AAPL&quot;                           │   │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│  └──────────────────────────────────────────────────────┘   │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>└─────────────────────────────────────────────────────────────┘</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│</*Redis Work flow*></record>
-  <record><*Redis Work flow*>┌───────────┴───────────┐</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│                       │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>FOUND IN REDIS             NOT FOUND</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│                       │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>▼                       ▼</*Redis Work flow*></record>
-  <record><*Redis Work flow*>┌──────────────────┐    ┌──────────────────┐</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│ Return cached    │    │ Query PostgreSQL │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│ data (FAST!)     │    │ Database (SLOW)  │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│                  │    │                  │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│ ⚡ 1-5ms          │    │ ⏱️ 50-200ms      │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>└──────────────────┘    └──────────────────┘</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│</*Redis Work flow*></record>
-  <record><*Redis Work flow*>▼</*Redis Work flow*></record>
-  <record><*Redis Work flow*>┌──────────────────┐</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│ Save to Redis    │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│ (30 sec expiry)  │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>└──────────────────┘</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│</*Redis Work flow*></record>
-  <record><*Redis Work flow*>▼</*Redis Work flow*></record>
-  <record><*Redis Work flow*>┌──────────────────┐</*Redis Work flow*></record>
-  <record><*Redis Work flow*>│ Return data      │</*Redis Work flow*></record>
-  <record><*Redis Work flow*>└──────────────────┘</*Redis Work flow*></record>
-</dataset>
+<table>
+    <tr>
+        <td>*Redis Work flow*</td>
+    </tr>
+    <tr>
+        <td>┌─────────────────────────────────────────────────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│  User requests: GET /us/history/AAPL                        │</td>
+    </tr>
+    <tr>
+        <td>└─────────────────────────────────────────────────────────────┘</td>
+    </tr>
+    <tr>
+        <td>│</td>
+    </tr>
+    <tr>
+        <td>▼</td>
+    </tr>
+    <tr>
+        <td>┌─────────────────────────────────────────────────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│  ProviderController.getUsHistory(&quot;AAPL&quot;)                    │</td>
+    </tr>
+    <tr>
+        <td>│  └─&gt; Calls: redisService.getCache(&quot;AAPL&quot;)                   │</td>
+    </tr>
+    <tr>
+        <td>└─────────────────────────────────────────────────────────────┘</td>
+    </tr>
+    <tr>
+        <td>│</td>
+    </tr>
+    <tr>
+        <td>▼</td>
+    </tr>
+    <tr>
+        <td>┌─────────────────────────────────────────────────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│  RedisService.getCache(&quot;AAPL&quot;)                              │</td>
+    </tr>
+    <tr>
+        <td>│  ┌──────────────────────────────────────────────────────┐   │</td>
+    </tr>
+    <tr>
+        <td>│  │  Check Redis: &quot;stock-AAPL&quot;                           │   │</td>
+    </tr>
+    <tr>
+        <td>│  └──────────────────────────────────────────────────────┘   │</td>
+    </tr>
+    <tr>
+        <td>└─────────────────────────────────────────────────────────────┘</td>
+    </tr>
+    <tr>
+        <td>│</td>
+    </tr>
+    <tr>
+        <td>┌───────────┴───────────┐</td>
+    </tr>
+    <tr>
+        <td>│                       │</td>
+    </tr>
+    <tr>
+        <td>FOUND IN REDIS             NOT FOUND</td>
+    </tr>
+    <tr>
+        <td>│                       │</td>
+    </tr>
+    <tr>
+        <td>▼                       ▼</td>
+    </tr>
+    <tr>
+        <td>┌──────────────────┐    ┌──────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│ Return cached    │    │ Query PostgreSQL │</td>
+    </tr>
+    <tr>
+        <td>│ data (FAST!)     │    │ Database (SLOW)  │</td>
+    </tr>
+    <tr>
+        <td>│                  │    │                  │</td>
+    </tr>
+    <tr>
+        <td>│ ⚡ 1-5ms          │    │ ⏱️ 50-200ms      │</td>
+    </tr>
+    <tr>
+        <td>└──────────────────┘    └──────────────────┘</td>
+    </tr>
+    <tr>
+        <td>│</td>
+    </tr>
+    <tr>
+        <td>▼</td>
+    </tr>
+    <tr>
+        <td>┌──────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│ Save to Redis    │</td>
+    </tr>
+    <tr>
+        <td>│ (30 sec expiry)  │</td>
+    </tr>
+    <tr>
+        <td>└──────────────────┘</td>
+    </tr>
+    <tr>
+        <td>│</td>
+    </tr>
+    <tr>
+        <td>▼</td>
+    </tr>
+    <tr>
+        <td>┌──────────────────┐</td>
+    </tr>
+    <tr>
+        <td>│ Return data      │</td>
+    </tr>
+    <tr>
+        <td>└──────────────────┘</td>
+    </tr>
+</table>
 
 **Python Integration**: In this project, historical daily records are collected using Python, enabling the visualization of trends for selected stocks and offering essential context for investment decisions. Since 2022, approximately 46,000 records have been gathered for about 60 stocks. When Docker runs, this historical data will be fetched from Yahoo and stored in the database.
 
