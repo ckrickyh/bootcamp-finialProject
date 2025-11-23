@@ -2,9 +2,9 @@
 [![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)](https://vimeo.com/manage/videos/1115271799)
 
 US Stock Heatmap Link: http://34.169.230.10:8102/us/heatmap<br>
-Video Back-End Present: https://vimeo.com/manage/videos/1115271799<br><br>
+Video Back-End Demonstration: https://vimeo.com/manage/videos/1115271799<br><br>
 
-**Step of deploying application**
+**Step of Deploying Application**
 ===============================
 0. Prerequisite : Docker installation for Docker-compose deployment
 1. git clone the project to your location
