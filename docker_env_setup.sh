@@ -1,6 +1,14 @@
-#Google Cloud Platform
-# Fetch the VM's external IP address
-EXTERNAL_IP=$(curl -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
+# Detect if running on Google Cloud Platform or local machine
+# Try to fetch the VM's external IP address from GCP metadata server
+EXTERNAL_IP=$(curl -s -f -H "Metadata-Flavor: Google" --connect-timeout 2 http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip 2>/dev/null)
+
+# If not on GCP (curl failed), use localhost for local development
+if [ -z "$EXTERNAL_IP" ]; then
+    echo "Not running on GCP, using localhost for local development"
+    EXTERNAL_IP="localhost"
+else
+    echo "Running on GCP, detected external IP: ${EXTERNAL_IP}"
+fi
 
 # Create/update a .env file that docker-compose will automatically read
 echo "EXTERNAL_IP=${EXTERNAL_IP}" > .env
