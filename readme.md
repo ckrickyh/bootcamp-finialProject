@@ -74,12 +74,12 @@ Docker-Compose manages the connections between the Dockerfiles of three microser
 **Redis**: Fast data retrieval is facilitated by Redis, which efficiently manages stable data that changes infrequently. The Redis cache is cleared every 30 seconds to reflect real-time updates. In a practical scenario, where stock history is relevant, data retention would be adjusted to 24 hours, after which the system queries the database to refresh the Redis cache. <br>
 
 *Without Redis*
-User Request → Controller → Service → Database (PostgreSQL) → Return Data
-                                    ⬆️
+User Request → Controller → Service → Database (PostgreSQL) → Return Data<br>
+                                    ⬆️<br>
                       Slow! Every time queries DB  <br><br> 
 *With Redis*
-User Request → Controller → RedisService → Redis Cache → Return Data (FAST!)
-      ⬇️ (if not found)
+User Request → Controller → RedisService → Redis Cache → Return Data (FAST!)<br>
+      ⬇️ (if not found)<br>
 Database (PostgreSQL) → Save to Redis → Return Data<br>
 ![App Preview](projectPreview/RedisWorkFlow.png)</br>
 
