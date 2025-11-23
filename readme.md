@@ -174,132 +174,47 @@ Database (PostgreSQL) → Save to Redis → Return Data<br>
 | │ Return data      │                                            |
 | └──────────────────┘                                            |
 
-
-<table>
-    <tr>
-        <td>*Redis Work flow*</td>
-    </tr>
-    <tr>
-        <td>┌─────────────────────────────────────────────────────────────┐</td>
-    </tr>
-    <tr>
-        <td>│  User requests: GET /us/history/AAPL                        │</td>
-    </tr>
-    <tr>
-        <td>└─────────────────────────────────────────────────────────────┘</td>
-    </tr>
-    <tr>
-        <td>│</td>
-    </tr>
-    <tr>
-        <td>▼</td>
-    </tr>
-    <tr>
-        <td>┌─────────────────────────────────────────────────────────────┐</td>
-    </tr>
-    <tr>
-        <td>│  ProviderController.getUsHistory(&quot;AAPL&quot;)                    │</td>
-    </tr>
-    <tr>
-        <td>│  └─&gt; Calls: redisService.getCache(&quot;AAPL&quot;)                   │</td>
-    </tr>
-    <tr>
-        <td>└─────────────────────────────────────────────────────────────┘</td>
-    </tr>
-    <tr>
-        <td>│</td>
-    </tr>
-    <tr>
-        <td>▼</td>
-    </tr>
-    <tr>
-        <td>┌─────────────────────────────────────────────────────────────┐</td>
-    </tr>
-    <tr>
-        <td>│  RedisService.getCache(&quot;AAPL&quot;)                              │</td>
-    </tr>
-    <tr>
-        <td>│  ┌──────────────────────────────────────────────────────┐   │</td>
-    </tr>
-    <tr>
-        <td>│  │  Check Redis: &quot;stock-AAPL&quot;                           │   │</td>
-    </tr>
-    <tr>
-        <td>│  └──────────────────────────────────────────────────────┘   │</td>
-    </tr>
-    <tr>
-        <td>└─────────────────────────────────────────────────────────────┘</td>
-    </tr>
-    <tr>
-        <td>│</td>
-    </tr>
-    <tr>
-        <td>┌───────────┴───────────┐</td>
-    </tr>
-    <tr>
-        <td>│                       │</td>
-    </tr>
-    <tr>
-        <td>FOUND IN REDIS             NOT FOUND</td>
-    </tr>
-    <tr>
-        <td>│                       │</td>
-    </tr>
-    <tr>
-        <td>▼                       ▼</td>
-    </tr>
-    <tr>
-        <td>┌──────────────────┐    ┌──────────────────┐</td>
-    </tr>
-    <tr>
-        <td>│ Return cached    │    │ Query PostgreSQL │</td>
-    </tr>
-    <tr>
-        <td>│ data (FAST!)     │    │ Database (SLOW)  │</td>
-    </tr>
-    <tr>
-        <td>│                  │    │                  │</td>
-    </tr>
-    <tr>
-        <td>│ ⚡ 1-5ms          │    │ ⏱️ 50-200ms      │</td>
-    </tr>
-    <tr>
-        <td>└──────────────────┘    └──────────────────┘</td>
-    </tr>
-    <tr>
-        <td>│</td>
-    </tr>
-    <tr>
-        <td>▼</td>
-    </tr>
-    <tr>
-        <td>┌──────────────────┐</td>
-    </tr>
-    <tr>
-        <td>│ Save to Redis    │</td>
-    </tr>
-    <tr>
-        <td>│ (30 sec expiry)  │</td>
-    </tr>
-    <tr>
-        <td>└──────────────────┘</td>
-    </tr>
-    <tr>
-        <td>│</td>
-    </tr>
-    <tr>
-        <td>▼</td>
-    </tr>
-    <tr>
-        <td>┌──────────────────┐</td>
-    </tr>
-    <tr>
-        <td>│ Return data      │</td>
-    </tr>
-    <tr>
-        <td>└──────────────────┘</td>
-    </tr>
-</table>
+"*Redis Work flow*"
+"┌─────────────────────────────────────────────────────────────┐"
+"│  User requests: GET /us/history/AAPL                        │"
+"└─────────────────────────────────────────────────────────────┘"
+"│"
+"▼"
+"┌─────────────────────────────────────────────────────────────┐"
+"│  ProviderController.getUsHistory("AAPL")                    │"
+"│  └─> Calls: redisService.getCache("AAPL")                   │"
+"└─────────────────────────────────────────────────────────────┘"
+"│"
+"▼"
+"┌─────────────────────────────────────────────────────────────┐"
+"│  RedisService.getCache("AAPL")                              │"
+"│  ┌──────────────────────────────────────────────────────┐   │"
+"│  │  Check Redis: "stock-AAPL"                           │   │"
+"│  └──────────────────────────────────────────────────────┘   │"
+"└─────────────────────────────────────────────────────────────┘"
+"│"
+"┌───────────┴───────────┐"
+"│                       │"
+"FOUND IN REDIS             NOT FOUND"
+"│                       │"
+"▼                       ▼"
+"┌──────────────────┐    ┌──────────────────┐"
+"│ Return cached    │    │ Query PostgreSQL │"
+"│ data (FAST!)     │    │ Database (SLOW)  │"
+"│                  │    │                  │"
+"│ ⚡ 1-5ms          │    │ ⏱️ 50-200ms      │"
+"└──────────────────┘    └──────────────────┘"
+"│"
+"▼"
+"┌──────────────────┐"
+"│ Save to Redis    │"
+"│ (30 sec expiry)  │"
+"└──────────────────┘"
+"│"
+"▼"
+"┌──────────────────┐"
+"│ Return data      │"
+"└──────────────────┘"
 
 **Python Integration**: In this project, historical daily records are collected using Python, enabling the visualization of trends for selected stocks and offering essential context for investment decisions. Since 2022, approximately 46,000 records have been gathered for about 60 stocks. When Docker runs, this historical data will be fetched from Yahoo and stored in the database.
 
