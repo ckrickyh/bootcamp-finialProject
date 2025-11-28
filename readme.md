@@ -10,6 +10,7 @@ Video Back-End Demonstration: https://vimeo.com/manage/videos/1115271799<br>
 1. git clone the project to your location
 2. cd to the project folder
 3. run `docker_env_setup.sh` to build and run the docker containers
+4. for local machine - http://localhost:8102/us/heatmap | for cloud vm - http://{external IP}:8102/us/heatmap
 
 **Final Project: Stock Heatmap Application**
 =================================
