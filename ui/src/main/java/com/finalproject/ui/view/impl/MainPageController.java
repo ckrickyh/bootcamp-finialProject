@@ -25,31 +25,7 @@ public class MainPageController implements MainPageOperation {
   public String loadStockTable(Model model) {
     List<ResponseDTO> stockData = this.uiService.getAllFinnhubData();
     model.addAttribute("stocks", stockData);
-    
-    // Construct baseUrl: use BASE_URL env var if set, otherwise derive from request
-    // This works for both local (localhost:8102) and GCP VM (34.169.230.10:8102)
-    String effectiveBaseUrl = baseUrl;
-    if (effectiveBaseUrl == null || effectiveBaseUrl.trim().isEmpty()) {
-      // Get request from RequestContextHolder to avoid changing interface signature
-      ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-      if (attributes != null) {
-        HttpServletRequest request = attributes.getRequest();
-        String scheme = request.getScheme();
-        String serverName = request.getServerName();
-        int serverPort = request.getServerPort();
-        // Include port if it's not the default port for the scheme
-        if ((scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443)) {
-          effectiveBaseUrl = scheme + "://" + serverName + ":" + serverPort;
-        } else {
-          effectiveBaseUrl = scheme + "://" + serverName;
-        }
-      } else {
-        // Fallback if request is not available (shouldn't happen in normal web context)
-        effectiveBaseUrl = "http://localhost:8102";
-      }
-    }
-    
-    model.addAttribute("baseUrl", effectiveBaseUrl);
+    model.addAttribute("baseUrl", resolveBaseUrl());
     return "heatmap";
   }
 
@@ -58,5 +34,61 @@ public class MainPageController implements MainPageOperation {
     List<HistoryDTO> stockHistory = this.uiService.getBackEndUsHistory(usCode);
     model.addAttribute("stockData", stockHistory);
     return "candlestick"; 
+  }
+
+  private String resolveBaseUrl() {
+    if (baseUrl != null && !baseUrl.trim().isEmpty()) {
+      return baseUrl.trim();
+    }
+
+    ServletRequestAttributes attributes =
+        (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+    if (attributes == null) {
+      return "http://localhost:8102";
+    }
+
+    HttpServletRequest request = attributes.getRequest();
+    String scheme = extractFirstHeader(request, "X-Forwarded-Proto", request.getScheme());
+    String forwardedHost = extractFirstHeader(request, "X-Forwarded-Host", null);
+    String forwardedPortHeader = extractFirstHeader(request, "X-Forwarded-Port", null);
+
+    if (forwardedHost != null && forwardedHost.contains(":")) {
+      return scheme + "://" + forwardedHost;
+    }
+
+    String host = forwardedHost != null && !forwardedHost.isEmpty()
+        ? forwardedHost
+        : request.getServerName();
+
+    Integer port = null;
+    if (forwardedPortHeader != null && !forwardedPortHeader.isEmpty()) {
+      try {
+        port = Integer.parseInt(forwardedPortHeader);
+      } catch (NumberFormatException ignored) {
+        port = null;
+      }
+    }
+    if (port == null) {
+      port = request.getServerPort();
+    }
+
+    boolean isDefaultPort =
+        ("http".equalsIgnoreCase(scheme) && port == 80)
+            || ("https".equalsIgnoreCase(scheme) && port == 443);
+
+    StringBuilder base = new StringBuilder().append(scheme).append("://").append(host);
+    if (!isDefaultPort) {
+      base.append(":").append(port);
+    }
+    return base.toString();
+  }
+
+  private String extractFirstHeader(HttpServletRequest request, String headerName, String fallback) {
+    String headerValue = request.getHeader(headerName);
+    if (headerValue == null || headerValue.isEmpty()) {
+      return fallback;
+    }
+    int commaIndex = headerValue.indexOf(',');
+    return commaIndex >= 0 ? headerValue.substring(0, commaIndex).trim() : headerValue.trim();
   }
 }
