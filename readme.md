@@ -98,3 +98,9 @@ Docker-Compose manages the connections between the Dockerfiles of three microser
 
 Candlestick chart for a specific stock, illustrating its historical trends</br>
 ![App Preview](projectPreview/CandleStickPreview.png)
+
+Remarks: <br>
+# DNS cloudflare domain setting for gcp<br>
+add the script below in the path "ui/src/main/resources/application.yml" & "docker-compose.yml": <br>
+BASE_URL: https://natureai.dpdns.org
+

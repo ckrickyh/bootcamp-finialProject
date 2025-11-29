@@ -50,7 +50,8 @@ services:
     #Google Cloud Platform Setting, avoiding localhost appeared in the link of redirect historyStick chart 
     environment:
       - BASE_URL=http://${EXTERNAL_IP}:8102
-
+      # DNS domain
+      #- BASE_URL=https://natureai.dpdns.org
 volumes:
   redis_data:
 
