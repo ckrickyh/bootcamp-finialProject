@@ -14,7 +14,6 @@ fi
 
 # Create/update a .env file that docker-compose will automatically read
 echo "EXTERNAL_IP=${EXTERNAL_IP}" > .env
-
 # Use the IP in docker-compose
 # Note: Using env vars directly is easier if docker-compose.yml references them
 # For example, if docker-compose.yml has:

@@ -1,7 +1,7 @@
 -- **Click the image** to view the video demonstration --
 [![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)](https://vimeo.com/manage/videos/1115271799)
 
-US Stock Heatmap Link: http://34.169.230.10:8102/us/heatmap<br>
+US Stock Heatmap Link: http://natureai.dpdns.org/us/heatmap<br>
 Video Back-End Demonstration: https://vimeo.com/manage/videos/1115271799<br>
 
 **Step of Deploying Application**
