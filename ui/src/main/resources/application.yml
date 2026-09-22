@@ -18,14 +18,54 @@ server:
 
 # Docker: postgres-container and redis-container
 
+---
+# ==========================================
+# 基礎共用設定
+# ==========================================
 spring:
-  datasource:
-    driverClassName: "org.postgresql.Driver"
-    url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"  # Docker
-    # url: "jdbc:postgresql://localhost:5432/bootcamp_2504"             # Localhost
-    username: "postgres"
-    password: "admin1234"
+  profiles:
+    active: ${EXTERNAL_IP:localhost}
   jpa:
     show-sql: false
     hibernate:
       ddl-auto: update
+
+service:
+  stock-data:
+    host: ${STOCK_DATA_HOST:stock-data-app}
+    port: ${STOCK_DATA_PORT:8091}
+      
+---
+# ==========================================
+# 本地環境設定（當 EXTERNAL_IP=localhost 時生效）
+# ==========================================
+spring:
+  config:
+    activate:
+      on-profile: localhost
+  datasource:
+    driverClassName: "org.postgresql.Driver"
+    url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"
+    username: "postgres"
+    password: "admin1234"
+
+---
+# ==========================================
+# 雲端環境設定（當 EXTERNAL_IP=remote 時生效）
+# ==========================================
+spring:
+  config:
+    activate:
+      on-profile: remote
+  datasource:
+    driverClassName: "org.postgresql.Driver"
+    url: ${SPRING_DATASOURCE_URL}
+    username: "${SPRING_DATASOURCE_USERNAME}"
+    password: "${SPRING_DATASOURCE_PASSWORD}"
+
+service:
+  stock-data:
+    host: ${STOCK_DATA_HOST:stock-data-app}
+    port: ${STOCK_DATA_PORT:80}
+
+

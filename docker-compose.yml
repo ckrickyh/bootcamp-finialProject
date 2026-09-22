@@ -31,14 +31,16 @@ services:
       - bootcamp-network
     ports:
       - "8100:8090"
-      
+
   stock-data-app:
     image: stock-data:0.0.1
     container_name: stock-data-app
     networks:
       - bootcamp-network
     ports:
-      - "8101:8091" 
+      - "8101:8091"
+    env_file:
+      - .env
 
   ui-app:
     image: ui:0.0.1
@@ -47,15 +49,14 @@ services:
       - bootcamp-network
     ports:
       - "8102:8092"
-    #Google Cloud Platform Setting, avoiding localhost appeared in the link of redirect historyStick chart 
-    environment:
-      - BASE_URL=http://${EXTERNAL_IP}:8102
-      # DNS domain
-      #- BASE_URL=https://natureai.dpdns.org
+    env_file:
+      - .env
+    # environment:
+    # - BASE_URL=http://${EXTERNAL_IP}:8102
+
 volumes:
   redis_data:
 
 networks:
   bootcamp-network:
     driver: bridge
-

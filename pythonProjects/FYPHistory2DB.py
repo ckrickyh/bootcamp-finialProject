@@ -2,17 +2,24 @@
 # # Read yahoo history
 
 # %%
+import os
 import requests
 from pandas import json_normalize
 import pandas as pd
 import datetime
+from dotenv import load_dotenv
+from pathlib import Path
 
 # %% [markdown]
 # ## setting
 
 # %%
+CURRENT_DIR = Path(__file__).resolve().parent
+load_dotenv(dotenv_path=CURRENT_DIR.parent / ".env")
+db_url = "postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504" if os.getenv("EXTERNAL_IP") == "localhost" else os.getenv("DATABASE_URL_UNPOOLED", "").replace("postgresql://", "postgresql+psycopg2://", 1)
+ 
 now = datetime.datetime.now()
-res = int(now.timestamp() * 1000) #end unix date
+res = int(now.timestamp()) #end unix date (seconds)
 
 stockLst = [
         "TSLA", "NVDA", "AAPL", "META", "GOOGL",
@@ -109,7 +116,7 @@ dfAll
 # ## df_logo
 
 # %%
-df_logo = pd.read_csv("Stock_List.csv")
+df_logo = pd.read_csv(CURRENT_DIR / "Stock_List.csv")
 df_logo["symbol_link"] = "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/"+ df_logo["symbol"]+".png"
 # df_logo["symbol_link"] = "https://eodhd.com/img/logos/US/"+ df_logo["symbol"]+".png"
 
@@ -137,7 +144,8 @@ from sqlalchemy import Table, Column, MetaData, Integer, String, Date, Float, Bi
 # bbootcamp_engine = create_engine("postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504")
 
 #=========== local and local docker=======================
-engineLst = ["postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504",]
+engineLst = [db_url]
+            # ["postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504",]
             #["postgresql+psycopg2://postgres:admin1234@localhost:5432/bootcamp_2504"] #5532, 5432
 
 for engine in engineLst:

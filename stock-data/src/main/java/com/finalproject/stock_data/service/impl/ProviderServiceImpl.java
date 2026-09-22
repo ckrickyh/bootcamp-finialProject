@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,6 +24,12 @@ import com.finalproject.stock_data.service.ProviderService;
 
 @Service
 public class ProviderServiceImpl implements ProviderService{
+
+  @Value("${service.data-supplier.host:data-supplier-app}")
+  private String supplierHost;
+
+  @Value("${service.data-supplier.port:8090}")
+  private Integer supplierPort;
 
   @Autowired
   RestTemplate restTemplate;
@@ -45,15 +52,15 @@ public class ProviderServiceImpl implements ProviderService{
 
   @Override
   public List<FinnhubEntity> getAllFinnhubData(){
-    String url = UriComponentsBuilder.newInstance()
+    UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
       .scheme("http")
+      .host(supplierHost);
 
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      .host("data-supplier-app")               // Docker
-      // .host("localhost")                          // localhost
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (supplierPort != null && supplierPort != 80) {
+      builder.port(supplierPort);
+    }
 
-      .port(8090)                               //對內
+    String url = builder
       .path("us/stocks")
       .build()
       .toUriString();
@@ -115,15 +122,15 @@ public class ProviderServiceImpl implements ProviderService{
   // ===== Profile ====
   @Override
   public List<ProfileEntity> getUsProfile(){
-    String url = UriComponentsBuilder.newInstance()
+    UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
       .scheme("http")
+      .host(supplierHost);
 
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      .host("data-supplier-app")         //  Docker
-      // .host("localhost")              //  localhost
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (supplierPort != null && supplierPort != 80) {
+      builder.port(supplierPort);
+    }
 
-      .port(8090)                       //對內
+    String url = builder
       .path("us/profile")
       .build()
       .toUriString();

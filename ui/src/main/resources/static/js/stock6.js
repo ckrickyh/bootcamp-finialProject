@@ -67,7 +67,7 @@ function updateChart(stocks) {
     //          {name : yahoo, value : 23.5}
     //     ]}
     // }
-    for (var industry in industryMap){
+    for (var industry in industryMap) {
         chartData.push({
             name: industry,
             children: industryMap[industry]
@@ -86,7 +86,7 @@ let option = {
             if (params && params.data && params.data.currentPrice != null) {
                 const sign = params.data.sign > 0 ? '▲' : params.data.sign < 0 ? '▼' : '-';
                 const code = encodeURIComponent(params.name);
-                const url = baseUrl + '/us/historystick/' + code; // wrong http://localhost:8092/us/historystick/' + code; correct 'http://localhost:8102/us/historystick/' + code;
+                const url = '/us/historystick/' + code; // wrong http://localhost:8092/us/historystick/' + code; correct 'http://localhost:8102/us/historystick/' + code;
 
                 return `
                     <div style="background: rgba(0, 0, 0, 0.1); padding: 10px; border-radius: 5px;">
@@ -112,7 +112,7 @@ let option = {
 
         label: {
             show: true,
-            formatter: function(params) {
+            formatter: function (params) {
                 console.log("process params" + params.name);
                 var value = Number(params.value);
                 console.log("process " + value);
@@ -142,9 +142,9 @@ let option = {
             }
         },
         roam: true, // Enable zooming and panning
-        emphasis: {focus: 'ancestor', blurScope: 'coordinateSystem'},
-        breadcrumb: {show: true, itemStyle: {color: '#8e8e90ff',fontSize: 14}}
-    }],     
+        emphasis: { focus: 'ancestor', blurScope: 'coordinateSystem' },
+        breadcrumb: { show: true, itemStyle: { color: '#8e8e90ff', fontSize: 14 } }
+    }],
     //=== end series
 };
 
@@ -198,14 +198,15 @@ var x = updateChart(stocks);
 console.log(x);
 myChart.setOption(option);
 
-myChart.on('dblclick', function(params) {
-    const code = params.name.split(" ")[0];
-    // window.open('http://localhost:8092/us/historystick/' + encodeURIComponent(code), "code", "location=0,width=600,height=400").focus();
-    //window.open('http://localhost:8102/us/historystick/' + encodeURIComponent(code), "code", "location=0,width=600,height=400").focus();
-    window.open(baseUrl + '/us/historystick/' + encodeURIComponent(code), "code", "location=0,width=600,height=400").focus();
-    // not ok http://ui-app:8102/us/historystick/'
+myChart.on('dblclick', function (params) {
+    if (!params.data || params.data.currentPrice == null) {
+        return;
+    }
 
-    // window.open("url","winName","location=0,width=300,height=214").focus();
+    const rawCode = params.data.name || params.name;
+    const cleanCode = rawCode.split(/[\s\n]+/)[0].trim().toUpperCase();
+
+    window.open('/us/historystick/' + encodeURIComponent(cleanCode), "code", "location=0,width=800,height=500").focus();
 });
 
 // Responsive
@@ -218,19 +219,19 @@ function refresh() {
     $.ajax({
         url: "/us/realtime", // Your endpoint to fetch the updated coin data
         type: "GET",
-        success: function(data) {
+        success: function (data) {
             stocks = data; // Update the stocks variable with new data
             updateChart(stocks); // Call the function to update the chart with new data
             console.log("Updated stocks data:", stocks);
 
-        myChart.setOption({
-            series: [{
-                data: chartData // Pass the updated chartData
-            }]
-        });
-        console.log("Updated stocks data:", stocks);
+            myChart.setOption({
+                series: [{
+                    data: chartData // Pass the updated chartData
+                }]
+            });
+            console.log("Updated stocks data:", stocks);
         },
-        error: function(err) {
+        error: function (err) {
             console.error("Error fetching data:", err);
         }
     });

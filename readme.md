@@ -1,16 +1,26 @@
 -- **Click the image** to view the video demonstration --
 [![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)](https://vimeo.com/manage/videos/1115271799)
 
-US Stock Heatmap Link: http://natureai.dpdns.org/us/heatmap<br>
+US Stock Heatmap Link: https://ui-app.blackstone-fcaa9eac.westus2.azurecontainerapps.io/us/heatmap<br>
 Video Back-End Demonstration: https://vimeo.com/manage/videos/1115271799<br>
 
 **Step of Deploying Application**
 ===============================
-0. Prerequisite : Docker installation for Docker-compose deployment
-1. git clone the project to your location
-2. cd to the project folder
-3. run `docker_env_setup.sh` to build and run the docker containers
-4. for local machine - http://localhost:8102/us/heatmap | for cloud vm - http://{external IP}:8102/us/heatmap
+0. Prerequisites:
+   - Docker & Docker Compose
+   - Java 21 & Maven
+   - Python 3.12
+1. Clone the project
+2. Configure `.env` file:
+   - Set `EXTERNAL_IP=localhost` for local Docker PostgreSQL & Redis
+   - Set `EXTERNAL_IP=remote` for cloud Neon PostgreSQL & Upstash Redis
+3. Run `docker_env_setup.sh` to build and run the docker containers:
+   ```bash
+   ./docker_env_setup.sh
+   ```
+4. Access the application:
+   - Local development: http://localhost:8102/us/heatmap
+   - Cloud production (Azure Container Apps): https://ui-app.blackstone-fcaa9eac.westus2.azurecontainerapps.io/us/heatmap
 
 **Final Project: Stock Heatmap Application**
 =================================
@@ -102,5 +112,5 @@ Candlestick chart for a specific stock, illustrating its historical trends</br>
 Remarks: <br>
 # DNS cloudflare domain setting for gcp<br>
 add the script below in the path "ui/src/main/resources/application.yml" & "docker-compose.yml": <br>
-BASE_URL: https://natureai.dpdns.org
+URL: https://ui-app.blackstone-fcaa9eac.westus2.azurecontainerapps.io/us/heatmap
 

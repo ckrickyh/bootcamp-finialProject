@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -15,20 +16,26 @@ import com.finalproject.ui.service.UiService;
 @Service
 public class UiServiceImpl implements UiService {
 
+  @Value("${service.stock-data.host:stock-data-app}")
+  private String stockDataHost;
+
+  @Value("${service.stock-data.port:8091}")
+  private Integer stockDataPort;
+
   @Autowired
   RestTemplate restTemplate;
 
   @Override
   public List<ResponseDTO> getAllFinnhubData(){
-    String url = UriComponentsBuilder.newInstance()
+    UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
       .scheme("http")
+      .host(stockDataHost);
 
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      .host("stock-data-app")
-      // .host("localhost")
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (stockDataPort != null && stockDataPort != 80) {
+      builder.port(stockDataPort);
+    }
 
-      .port(8091)
+    String url = builder
       .path("us/realtime")
       .build()
       .toUriString();
@@ -45,15 +52,15 @@ public class UiServiceImpl implements UiService {
 
   @Override
   public List<ProfileDTO> getUsProfile(){
-      String url = UriComponentsBuilder.newInstance()
+    UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
       .scheme("http")
+      .host(stockDataHost);
 
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!
-      .host("stock-data-app")
-      // .host("localhost")
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (stockDataPort != null && stockDataPort != 80) {
+      builder.port(stockDataPort);
+    }
 
-      .port(8091)
+    String url = builder
       .path("us/profile")
       .build()
       .toUriString();
@@ -70,17 +77,16 @@ public class UiServiceImpl implements UiService {
 
   @Override
   public List<HistoryDTO> getBackEndUsHistory(String usCode) {
-      String url = UriComponentsBuilder.newInstance()
+    UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
       .scheme("http")
+      .host(stockDataHost);
 
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      .host("stock-data-app")
-      // .host("localhost")
-      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    
-      .port(8091)
+    if (stockDataPort != null && stockDataPort != 80) {
+      builder.port(stockDataPort);
+    }
+
+    String url = builder
       .path("us/history/" + usCode.toUpperCase())
-      // .pathSegment(usCode)
       .build()
       .toUriString();
       

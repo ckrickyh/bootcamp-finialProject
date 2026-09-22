@@ -3,14 +3,12 @@
 server:
   port: 8091
 
+# ==========================================
+# 基礎共用設定
+# ==========================================
 spring:
-  datasource:
-    driverClassName: "org.postgresql.Driver"
-    url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"
-    # "jdbc:postgresql://postgres-container:5432/bootcamp_2504"  # not 5532 As it is located inside the docker, is 5432
-    # url: "jdbc:postgresql://localhost:5432/bootcamp_2504"        # Localhost
-    username: "postgres"
-    password: "admin1234" # local docker: "admin1234"
+  profiles:
+    active: ${EXTERNAL_IP:localhost}
   jpa:
     show-sql: true
     hibernate:
@@ -19,8 +17,64 @@ spring:
     #   hibernate:
     #     dialect: org.hibernate.dialect.PostgreSQLDialect
 
+service:
+  data-supplier:
+    host: ${DATA_SUPPLIER_HOST:data-supplier-app}
+    port: ${DATA_SUPPLIER_PORT:8090}
+
+---
+# ==========================================
+# 本地環境設定（當 EXTERNAL_IP=localhost 時生效）
+# ==========================================
+spring:
+  config:
+    activate:
+      on-profile: localhost
+  datasource:
+    driverClassName: "org.postgresql.Driver"
+    # url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"
+    # "jdbc:postgresql://postgres-container:5432/bootcamp_2504"  # not 5532 As it is located inside the docker, is 5432
+    # url: "jdbc:postgresql://localhost:5432/bootcamp_2504"        # Localhost
+    # username: "postgres"
+    # password: "admin1234" # local docker: "admin1234"
+    url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"
+    username: "postgres"
+    password: "admin1234"
+
   data:
     redis:
-      host: redis-container  # Docker
+      # host: redis-container  # Docker
       # host: localhost      # Localhost
+      # port: 6379
+      host: redis-container
       port: 6379
+      password: ""
+      ssl:
+        enabled: false
+
+---
+# ==========================================
+# 雲端環境設定（當 EXTERNAL_IP=remote 時生效）
+# ==========================================
+spring:
+  config:
+    activate:
+      on-profile: remote
+  datasource:
+    driverClassName: "org.postgresql.Driver"
+    url: ${SPRING_DATASOURCE_URL}
+    username: "${SPRING_DATASOURCE_USERNAME}"
+    password: "${SPRING_DATASOURCE_PASSWORD}"
+
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      password: "${SPRING_DATA_REDIS_PASSWORD:}"
+      ssl:
+        enabled: ${SPRING_DATA_REDIS_SSL_ENABLED:true}
+
+service:
+  data-supplier:
+    host: ${DATA_SUPPLIER_HOST:data-supplier-app}
+    port: ${DATA_SUPPLIER_PORT:80}

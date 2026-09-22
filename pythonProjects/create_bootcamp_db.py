@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2.errors import DuplicateDatabase
 
-# Your create_database_if_not_exists function (as provided)
+#  create_database
 def create_database_if_not_exists(host, port, user, password, db_name):
     """
     Connects to the default 'postgres' database and creates the specified
