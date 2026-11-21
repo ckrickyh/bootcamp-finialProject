@@ -41,6 +41,8 @@ services:
       - "8101:8091"
     env_file:
       - .env
+    environment:
+      EXTERNAL_IP: ${EXTERNAL_IP:-localhost}
 
   ui-app:
     image: ui:0.0.1

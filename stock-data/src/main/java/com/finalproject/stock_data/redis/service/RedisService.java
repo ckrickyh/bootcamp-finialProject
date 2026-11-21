@@ -8,4 +8,3 @@ public interface RedisService {
 
   List<FrontEndRedisHistoryDTO> getCache(String targetCode) throws JsonProcessingException;
 }
- 

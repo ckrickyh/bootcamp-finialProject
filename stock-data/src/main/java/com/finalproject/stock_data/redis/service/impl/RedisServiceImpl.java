@@ -38,7 +38,7 @@ public class RedisServiceImpl implements RedisService {
 
     // ============================
 
-    // ====== Redis Ricky =====
+    // ====== Redis =====
     @Override
     public List<FrontEndRedisHistoryDTO> getCache(String targetCode)
         throws JsonProcessingException {
@@ -46,10 +46,8 @@ public class RedisServiceImpl implements RedisService {
             // 1: check the targetCode existing in cache - redisDTOs[hashmap]
             // 2: if found, redisDTOs -> frontEndRedisDTOs
             // 3. else, DB action
-            //   3.1: DB 'enities' findBy targetCode -> frontEndDTOs
-            //   3.2: DB Each List<'enities'> findBy dbUniqueCode -> redisDTOs[hashmap]
+            //   3.1: DB 'enities' findBy targetCode -> frontEndDTOs and cache
 
-            // !!!
             List<FrontEndRedisHistoryDTO> frontEndRedisHistoryDTOs = new ArrayList<>();
 
             String upTargetCode = targetCode.toUpperCase();
@@ -77,17 +75,11 @@ public class RedisServiceImpl implements RedisService {
                     }
                 }
 
-                // ③ 3.2 each RedisManager < Key, redisDTOs > <- each DB Entity
-                List<String> usCodes = this.historyRepository.findDistinctStockCodes();
-                // List<String> usCodes = StockList.getList();
-                for (String usCode : usCodes){
-                    List<HistoryEntity> historyEntitiesByCode = this.historyRepository.findByCode(usCode);
-                    List<RedisHistoryDTO> newRedisHistoryDTOs = historyEntitiesByCode.stream().map(e -> this.redisDTOMapper.mapDB(e))
-                        .collect(Collectors.toList());
-                    String renewRedisKey = "stock-" + usCode;
-                    this.redisManager.write(renewRedisKey, newRedisHistoryDTOs, 30L); // Cache as an array
-                }           
-                //this.redisManager.write(renewRedisKey, new RedisHistoryDTO[]{redisHistoryDTO}, 30L); // Cache as an array
+                // ③ 3.2 Cache the requested stock's history
+                List<RedisHistoryDTO> redisHistoryForCode = historyEntities.stream()
+                    .map(entity -> this.redisDTOMapper.mapDB(entity))
+                    .collect(Collectors.toList());
+                this.redisManager.write(redisKey, redisHistoryForCode, 30L);
             }
 
         return frontEndRedisHistoryDTOs;

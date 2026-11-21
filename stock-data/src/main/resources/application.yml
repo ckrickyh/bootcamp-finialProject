@@ -26,10 +26,11 @@ service:
 # ==========================================
 # 本地環境設定（當 EXTERNAL_IP=localhost 時生效）
 # ==========================================
+# EXTERNAL_IP=local is also supported for local Redis.
 spring:
   config:
     activate:
-      on-profile: localhost
+      on-profile: "localhost | local"
   datasource:
     driverClassName: "org.postgresql.Driver"
     # url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"

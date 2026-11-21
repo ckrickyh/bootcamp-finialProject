@@ -146,7 +146,7 @@ from sqlalchemy import Table, Column, MetaData, Integer, String, Date, Float, Bi
 #=========== local and local docker=======================
 engineLst = [db_url]
             # ["postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504",]
-            #["postgresql+psycopg2://postgres:admin1234@localhost:5432/bootcamp_2504"] #5532, 5432
+            # ["postgresql+psycopg2://postgres:admin1234@localhost:5432/bootcamp_2504"] #5532, 5432
 
 for engine in engineLst:
   bootcamp_engine = create_engine(engine)
