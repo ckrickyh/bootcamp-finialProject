@@ -52,3 +52,16 @@ class RedisServiceImplTest {
     assertEquals(2, cachedHistory.getValue().size());
   }
 }
+
+/*
+ * 心智圖：cache miss（Redis 沒有快取）
+ * ├─ 準備 Arrange
+ * │  ├─ HistoryRepository 回傳 2 筆 MARA 資料
+ * │  └─ RedisManager 是 mock，未設定 read 回應時會回傳 null
+ * ├─ 執行 Act
+ * │  └─ getCache("mara")：轉成大寫 MARA，再查詢資料庫
+ * └─ 驗證 Assert
+ *    ├─ 回傳結果有 2 筆
+ *    ├─ 有查 MARA，沒有查所有股票代碼
+ *    └─ 寫入 stock-MARA，TTL TimeToLife 為 30 秒，快取 2 筆資料
+ */

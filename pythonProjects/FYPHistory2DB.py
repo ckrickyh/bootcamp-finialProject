@@ -1,195 +1,120 @@
-# %% [markdown]
-# # Read yahoo history
-
-# %%
-import os
-import requests
-from pandas import json_normalize
-import pandas as pd
 import datetime
-from dotenv import load_dotenv
+import os
 from pathlib import Path
 
-# %% [markdown]
-# ## setting
-
-# %%
-CURRENT_DIR = Path(__file__).resolve().parent
-load_dotenv(dotenv_path=CURRENT_DIR.parent / ".env")
-db_url = "postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504" if os.getenv("EXTERNAL_IP") == "localhost" else os.getenv("DATABASE_URL_UNPOOLED", "").replace("postgresql://", "postgresql+psycopg2://", 1)
- 
-now = datetime.datetime.now()
-res = int(now.timestamp()) #end unix date (seconds)
-
-stockLst = [
-        "TSLA", "NVDA", "AAPL", "META", "GOOGL",
-        "MSFT", "INTC", "AVGO", "SOUN", "AMD",
-        "NFLX", "UBER", "TGT", "BBAI", "OSS"
-        ,"DNUT", "COMP", "OPEN", "MARA", "IOVA"
-        ,"WMT",  "HD", "AMZN", "NIO", "COST"
-        ,"PYPL", "ADBE", "CRM", "ORCL", "IBM"
-        ,"CAH", "ACGL", "BLL", "CEGVV", "CLX"
-        ,"CL", "TECK", "CPRT", "CAH", "MDLZ"
-        ,"FANG",  "EL", "EXC", "LOW", "MAR"
-        ,"GILD", "HAL", "LMT", "MCD", "NKE"
-        ,"LHX", "MET", "MO", "MS", "V"
-        ,"LLY", "JNJ", "PG", "KO"
-        ,"TSM", "PDD", "CRWV", "PLTR", "HOOD"
-        ,"SMCI", "IREN", "WFC", "XOM", "APH"
-      ]
-
-start_unix_date = "1657237004"
-end_unix_date = res
-
-headers = {
-    "User-Agent": "Mozilla/5.0"
-}
-
-# tslaUrl = r'https://query1.finance.yahoo.com/v8/finance/chart/NVDA?period1=1657237004&period2=1751931404&interval=1d&events=history'
-# tslaUrl = '/content/sample_data/TSLA.json'
-
-# %%
-def stockUrl(stock):
-  return f'https://query1.finance.yahoo.com/v8/finance/chart/{stock}?period1={start_unix_date}&period2={end_unix_date}&interval=1d&events=history'
-
-def dfTreatment(url, headers):
-  response = requests.get(url, headers = headers)
-  data = response.json()
-  if (data['chart']['result'] is not None):
-    df_metaData = json_normalize(data['chart']['result'])
-    df_indicator = pd.DataFrame(df_metaData['indicators.quote'][0])
-    return df_metaData, df_indicator
-  else:
-    return None, None
-
-def dfExtract(df_metaData, df_indicator, dfStock, dfAll, i):
-  if df_metaData is not None:
-    for j in df_indicator.columns.to_list():
-      dfStock[j] = df_indicator[j][0]
-    dfStock['code'] = i
-    dfStock['datetime'] = df_metaData['timestamp'][0]
-    #print(dfStock.columns.to_list())
-  return dfStock
-
-def dfConact(dfAll, dfStock):
-  if dfAll.size == 0:
-    dfAll=pd.DataFrame(columns=dfStock.columns.to_list())
-
-  dfAll = pd.concat([dfAll, dfStock], ignore_index = True)
-  return dfAll
-
-def dfFillNA(dfAll):
-  if dfAll.isna().any().any() == "np.True_":
-    dfAll = dfAll.fillna(method = "ffill")
-    msg = 'NA value'
-  else:
-    msg = 'no NA'
-  # dfAll.to_csv("OLHC.csv")
-  return dfAll, msg
-
-
-# %%
-dfAll = pd.DataFrame()
-
-for i in stockLst:
-
-  url = stockUrl(i)
-
-  df_3, df_4 = dfTreatment(url, headers)
-  
-  dfStock = pd.DataFrame()
-
-  dfStock = dfExtract(df_3, df_4, dfStock, dfAll,i)
-
-  dfAll = dfConact(dfAll, dfStock)
-
-dfAll['datetime'] = pd.to_datetime(dfAll['datetime'], unit="s").dt.date
-dfAll, msg = dfFillNA(dfAll)
-dfAll = dfAll.sort_values(by=['code', 'datetime'])
-
-print(f"Completed! {msg}" )
-
-# %%
-dfAll
-
-# %% [markdown]
-# ## df_logo
-
-# %%
-df_logo = pd.read_csv(CURRENT_DIR / "Stock_List.csv")
-df_logo["symbol_link"] = "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/"+ df_logo["symbol"]+".png"
-# df_logo["symbol_link"] = "https://eodhd.com/img/logos/US/"+ df_logo["symbol"]+".png"
-
-# %%
-dfAll = dfAll.merge(df_logo, left_on='code', right_on='symbol')
-dfAll.drop(['symbol'], axis = 1, inplace = True)
-dfAll['index'] = dfAll.index
-dfAll
-
-# %% [markdown]
-# # pandas write to DB
-
-# %%
 import pandas as pd
+import requests
 from sqlalchemy import create_engine
-from sqlalchemy import Table, Column, MetaData, Integer, String, Date, Float, BigInteger
-
-# postgres -> user name
-# admin1234 -> password
-# bootcamp_2504 -> database name
-
-# localhost
-# bootcamp_engine = create_engine("postgresql+psycopg2://postgres:admin1234@localhost:5432/bootcamp_2504")
-# Docker
-# bbootcamp_engine = create_engine("postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504")
-
-#=========== local and local docker=======================
-engineLst = [db_url]
-            # ["postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504",]
-            # ["postgresql+psycopg2://postgres:admin1234@localhost:5432/bootcamp_2504"] #5532, 5432
-
-for engine in engineLst:
-  bootcamp_engine = create_engine(engine)
-
-  # Define table structure
-  metadata = MetaData()
-
-  ohlc_data_schema = Table(
-    "ohlc_data", metadata,  #Table name
-    Column("id", BigInteger, primary_key=True),
-    Column("code", String(10), nullable=False),
-    Column("date", Date, nullable=False),
-    Column("open", Float, nullable=False),
-    Column("high", Float, nullable=False),
-    Column("low", Float, nullable=False),
-    Column("close", Float, nullable=False),
-    Column("volume", BigInteger, nullable=False),
-    Column("symbolink", String, nullable=False)
-  )
-
-  metadata.create_all(bootcamp_engine)
-
-  # table name = ohlc_data
-  # auto create table
-  # "replace" -> delete and insert
-  # "append" -> insert
-  dfAll.to_sql("ohlc_data", bootcamp_engine, index=False, if_exists="replace")
-  print(f'OK: {engine}')
-
-  # ==========================================================
-  # Define logo table structure
-  metadata = MetaData()
-
-  stock_logo_schema = Table(
-    "stock_logo", metadata,  #Table name
-    Column("symbol", String(15), primary_key=True),
-    Column("logo_link", String(100), nullable=True)
-  )
-  metadata.create_all(bootcamp_engine)
-  df_logo.to_sql("stock_logo", bootcamp_engine, index=False, if_exists="replace")
 
 
-# %%
-df_logo
+CURRENT_DIR = Path(__file__).resolve().parent
+START_UNIX_DATE = "1657237004"
+STOCK_LIST = [
+    "TSLA", "NVDA", "AAPL", "META", "GOOGL",
+    "MSFT", "INTC", "AVGO", "SOUN", "AMD",
+    "NFLX", "UBER", "TGT", "BBAI", "OSS",
+    "DNUT", "COMP", "OPEN", "MARA", "IOVA",
+    "WMT", "HD", "AMZN", "NIO", "COST",
+    "PYPL", "ADBE", "CRM", "ORCL", "IBM",
+    "CAH", "ACGL", "BLL", "CEGVV", "CLX",
+    "CL", "TECK", "CPRT", "MDLZ",
+    "FANG", "EL", "EXC", "LOW", "MAR",
+    "GILD", "HAL", "LMT", "MCD", "NKE",
+    "LHX", "MET", "MO", "MS", "V",
+    "LLY", "JNJ", "PG", "KO",
+    "TSM", "PDD", "CRWV", "PLTR", "HOOD",
+    "SMCI", "IREN", "WFC", "XOM", "APH",
+]
+HEADERS = {"User-Agent": "Mozilla/5.0"}
 
 
+def stock_url(stock, start=START_UNIX_DATE, end=None):
+    if end is None:
+        end = int(datetime.datetime.now().timestamp())
+    return (
+        f"https://query1.finance.yahoo.com/v8/finance/chart/{stock}"
+        f"?period1={start}&period2={end}&interval=1d&events=history"
+    )
+
+
+def fetch_stock_history(stock, start=START_UNIX_DATE, end=None, get=None):
+    if get is None:
+        get = requests.get
+    response = get(stock_url(stock, start, end), headers=HEADERS, timeout=30)
+    response.raise_for_status()
+    result = response.json().get("chart", {}).get("result")
+    if not result:
+        return pd.DataFrame()
+
+    stock_data = result[0]
+    quote = stock_data.get("indicators", {}).get("quote", [{}])[0]
+    frame = pd.DataFrame(quote)
+    frame["code"] = stock
+    frame["datetime"] = stock_data.get("timestamp", [])
+    return frame
+
+
+def fetch_history(stock_symbols=STOCK_LIST, start=START_UNIX_DATE, end=None, get=None):
+    frames = [
+        fetch_stock_history(stock, start=start, end=end, get=get)
+        for stock in stock_symbols
+    ]
+    frames = [frame for frame in frames if not frame.empty]
+    if not frames:
+        raise ValueError("Yahoo Finance returned no stock history.")
+
+    history = pd.concat(frames, ignore_index=True)
+    history["datetime"] = pd.to_datetime(history["datetime"], unit="s").dt.date
+    history = history.sort_values(["code", "datetime"]).reset_index(drop=True)
+    value_columns = [column for column in history.columns if column not in {"code", "datetime"}]
+    history[value_columns] = history.groupby("code", sort=False)[value_columns].ffill()
+    return history
+
+
+def load_stock_logos(path=CURRENT_DIR / "Stock_List.csv"):
+    logos = pd.read_csv(path)
+    logos["symbol_link"] = (
+        "https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/"
+        + logos["symbol"]
+        + ".png"
+    )
+    return logos
+
+
+def prepare_database_frames(history, logos):
+    history = history.merge(logos, left_on="code", right_on="symbol")
+    history = history.drop(columns=["symbol"])
+    history["index"] = history.index
+    return history, logos
+
+
+def get_database_url():
+    database_url = os.getenv("DATABASE_URL")
+    if not database_url:
+        raise RuntimeError("Set the DATABASE_URL environment variable.")
+    return database_url
+
+
+def write_to_database(history, logos, database_url):
+    engine = create_engine(database_url)
+    try:
+        history.to_sql("ohlc_data", engine, index=False, if_exists="replace")
+        logos.to_sql("stock_logo", engine, index=False, if_exists="replace")
+    finally:
+        engine.dispose()
+
+
+def main():
+    from dotenv import load_dotenv
+
+    load_dotenv(dotenv_path=CURRENT_DIR.parent / ".env")
+    database_url = get_database_url()
+    history = fetch_history()
+    logos = load_stock_logos()
+    history, logos = prepare_database_frames(history, logos)
+    write_to_database(history, logos, database_url)
+    print(f"Completed! {len(history)} history rows written.")
+
+
+if __name__ == "__main__":
+    main()
