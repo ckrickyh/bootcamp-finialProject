@@ -32,28 +32,34 @@ public class QuoteServiceImpl implements QuoteService{
   private String keyValue3;
   @Value("${service.finnhub.api.quote.key-value4}")
   private String keyValue4;
-  @Value("${service.finnhub.api.quote.key-value5}")
-  private String keyValue5;
   @Value("${service.finnhub.api.quote.endpoint}")
   private String endPoint;
   @Value("${service.finnhub.api.quote.version}")
   private String version;
+  @Value("${service.finnhub.api.history.key-value}")
+  private String historyKeyValue;
+  @Value("${service.finnhub.api.history.key-value2}")
+  private String historyKeyValue2;
+  @Value("${service.finnhub.api.history.key-value3}")
+  private String historyKeyValue3;
+  @Value("${service.finnhub.api.history.key-value4}")
+  private String historyKeyValue4;
+  @Value("${service.finnhub.api.history.key-value5}")
+  private String historyKeyValue5;
 
   // live data
   private String[] apiKeysLive;
+  private String[] apiKeysHistory;
   @PostConstruct
   public void init() {
       this.apiKeysLive = new String[]{keyValue, keyValue2, keyValue3, keyValue4};
+      this.apiKeysHistory = new String[]{
+          historyKeyValue, historyKeyValue2, historyKeyValue3,
+          historyKeyValue4, historyKeyValue5
+      };
   }
   //https://finnhub.io/api/v1/quote?symbol=AAPL&token=key-value
  
-  // historial data
-  private static final String keyValueH1 = "d1utrt1r01qp42gvlo90d1utrt1r01qp42gvlo9g";
-  private static final String keyValueH2 = "d2qo349r01qn21mkcoi0d2qo349r01qn21mkcoig";
-  private static final String keyValueH3 = "d2qse89r01qluccprutgd2qse89r01qluccpruu0";
-  private static final String keyValueH4 = "d2qskahr01qluccpsmk0d2qskahr01qluccpsmkg";
-  private static final String keyValueH5 = "d30i1ipr01qnmrsek55gd30i1ipr01qnmrsek560";
-  String[] apiKeysHistory = {keyValueH1, keyValueH2, keyValueH3, keyValueH4, keyValueH5};
   private static final String Profile_URL = "https://finnhub.io/api/v1/stock/profile2";
   //https://finnhub.io/api/v1/stock/profile2?symbol=AAPL&token=key-value
 
@@ -77,8 +83,6 @@ public class QuoteServiceImpl implements QuoteService{
         .queryParam("token", apiKey) //
         .build() //
         .toUriString();
-      System.out.println("url=" + apiUrl);
-
       ApiDTO apiDTO = this.restTemplate.getForObject(apiUrl, ApiDTO.class);
       if (apiDTO != null) {
         apiDTOs.add(apiDTO);
@@ -115,7 +119,6 @@ public class QuoteServiceImpl implements QuoteService{
 
       String apiKey = getApiKeyForIndex(x, apiKeysHistory);
       String apiUrl = Profile_URL + "?symbol=" + usCode + "&token=" + apiKey;
-      System.out.println(apiUrl);
       ApiProfileDTO apiProfileDTO = this.restTemplate.getForObject(apiUrl, ApiProfileDTO.class);
       if (apiProfileDTO != null) {
         apiProfileDTOs.add(apiProfileDTO);

@@ -1,5 +1,9 @@
+import os
+from pathlib import Path
+
 import psycopg2
 from psycopg2.errors import DuplicateDatabase
+from dotenv import load_dotenv
 
 #  create_database
 def create_database_if_not_exists(host, port, user, password, db_name):
@@ -41,11 +45,16 @@ def create_database_if_not_exists(host, port, user, password, db_name):
             conn.close()
 
 if __name__ == "__main__":
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+    local_db_password = os.getenv("LOCAL_DB_PASSWORD")
+    if not local_db_password:
+        raise RuntimeError("LOCAL_DB_PASSWORD must be set in the environment or .env file")
+
     # --- Configuration for localhost:5432 (system-installed PostgreSQL) ---
     DB_HOST_5432 = "localhost"
     DB_PORT_5432 = "5432"
     DB_USER_5432 = "postgres"
-    DB_PASSWORD_5432 = "admin1234" # Replace with your actual password for 5432
+    DB_PASSWORD_5432 = local_db_password
     TARGET_DATABASE_NAME = "bootcamp_2504"
 
     print("--- Attempting to create database on localhost:5432 ---")
@@ -76,7 +85,7 @@ if __name__ == "__main__":
     DB_HOST_5532 = "localhost"
     DB_PORT_5532 = "5532"
     DB_USER_5532 = "postgres"
-    DB_PASSWORD_5532 = "admin1234" # Replace with your actual password for 5532
+    DB_PASSWORD_5532 = local_db_password
 
     create_database_if_not_exists(
         DB_HOST_5532,

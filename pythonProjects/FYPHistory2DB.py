@@ -9,6 +9,7 @@ import pandas as pd
 import datetime
 from dotenv import load_dotenv
 from pathlib import Path
+from sqlalchemy.engine import URL
 
 # %% [markdown]
 # ## setting
@@ -16,7 +17,22 @@ from pathlib import Path
 # %%
 CURRENT_DIR = Path(__file__).resolve().parent
 load_dotenv(dotenv_path=CURRENT_DIR.parent / ".env")
-db_url = "postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504" if os.getenv("EXTERNAL_IP") == "localhost" else os.getenv("DATABASE_URL_UNPOOLED", "").replace("postgresql://", "postgresql+psycopg2://", 1)
+if os.getenv("EXTERNAL_IP") == "localhost":
+  local_db_password = os.getenv("LOCAL_DB_PASSWORD")
+  if not local_db_password:
+    raise RuntimeError("LOCAL_DB_PASSWORD must be set in the environment or .env file")
+  db_url = URL.create(
+    "postgresql+psycopg2",
+    username="postgres",
+    password=local_db_password,
+    host="localhost",
+    port=5532,
+    database="bootcamp_2504",
+  )
+else:
+  db_url = os.getenv("DATABASE_URL_UNPOOLED", "").replace(
+    "postgresql://", "postgresql+psycopg2://", 1
+  )
  
 now = datetime.datetime.now()
 res = int(now.timestamp()) #end unix date (seconds)
@@ -135,18 +151,11 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, MetaData, Integer, String, Date, Float, BigInteger
 
 # postgres -> user name
-# admin1234 -> password
+# Local database credentials are read from LOCAL_DB_PASSWORD.
 # bootcamp_2504 -> database name
-
-# localhost
-# bootcamp_engine = create_engine("postgresql+psycopg2://postgres:admin1234@localhost:5432/bootcamp_2504")
-# Docker
-# bbootcamp_engine = create_engine("postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504")
 
 #=========== local and local docker=======================
 engineLst = [db_url]
-            # ["postgresql+psycopg2://postgres:admin1234@localhost:5532/bootcamp_2504",]
-            # ["postgresql+psycopg2://postgres:admin1234@localhost:5432/bootcamp_2504"] #5532, 5432
 
 for engine in engineLst:
   bootcamp_engine = create_engine(engine)

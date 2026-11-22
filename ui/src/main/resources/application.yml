@@ -5,18 +5,6 @@ server:
 # DNS cloudflare domain for gcp
 # BASE_URL: https://natureai.dpdns.org
 
-# service:
-#   coingecko:
-#     host:
-#       demo: "api.coingecko.com"
-#       pro: "pro-api.coingecko.com"
-#     api:
-#       key-name: "x-cg-demo-api-key"
-#       key-value: "CG-ZRR6HJgbqiMFjtYyqKYaCuTA"
-#       markets:
-#         version: "api/v3"
-#         endpoint: "/coins/markets"
-
 # Docker: postgres-container and redis-container
 
 ---
@@ -48,7 +36,7 @@ spring:
     driverClassName: "org.postgresql.Driver"
     url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"
     username: "postgres"
-    password: "admin1234"
+    password: ${LOCAL_DB_PASSWORD}
 
 ---
 # ==========================================

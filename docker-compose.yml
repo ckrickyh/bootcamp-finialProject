@@ -4,7 +4,7 @@ services:
     container_name: postgres-container
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin1234
+      POSTGRES_PASSWORD: ${LOCAL_DB_PASSWORD:?Set LOCAL_DB_PASSWORD in .env}
       POSTGRES_DB: bootcamp_2504
       PGDATA: /var/lib/postgresql/data/pgdata15
     networks:
@@ -31,6 +31,8 @@ services:
       - bootcamp-network
     ports:
       - "8100:8090"
+    env_file:
+      - .env
 
   stock-data-app:
     image: stock-data:0.0.1
