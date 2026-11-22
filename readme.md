@@ -1,7 +1,7 @@
 -- **Click the image** to view the video demonstration --
 [![App Preview](projectPreview/FinalProject-StockHeatmapPost.png)](https://vimeo.com/manage/videos/1115271799)
 
-US Stock Heatmap Link: https://ui-app.happydesert-1c704506.westus2.azurecontainerapps.io/us/heatmap<br>
+US Stock Heatmap Link: https://ui-app.blackstone-fcaa9eac.westus2.azurecontainerapps.io/us/heatmap<br>
 Video Back-End Demonstration: https://vimeo.com/manage/videos/1115271799<br>
 
 **Step of Deploying Application**
