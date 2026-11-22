@@ -16,7 +16,7 @@ STOCK_LIST = [
     "DNUT", "COMP", "OPEN", "MARA", "IOVA",
     "WMT", "HD", "AMZN", "NIO", "COST",
     "PYPL", "ADBE", "CRM", "ORCL", "IBM",
-    "CAH", "ACGL", "BALL", "CEGVV", "CLX",
+    "CAH", "ACGL", "BALL", "CEG", "CLX",
     "CL", "TECK", "CPRT", "MDLZ",
     "FANG", "EL", "EXC", "LOW", "MAR",
     "GILD", "HAL", "LMT", "MCD", "NKE",
