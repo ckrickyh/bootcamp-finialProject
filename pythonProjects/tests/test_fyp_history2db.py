@@ -63,7 +63,7 @@ class FYPHistory2DBTests(unittest.TestCase):
             with patch.object(pd.DataFrame, "to_sql") as to_sql:
                 FYPHistory2DB.write_to_database(history, logos, "postgresql://test")
 
-        create_engine.assert_called_once_with("postgresql://test")
+        create_engine.assert_called_once_with("postgresql+psycopg2://test")
         self.assertEqual(
             [write.args[0] for write in to_sql.call_args_list],
             ["ohlc_data", "stock_logo"],

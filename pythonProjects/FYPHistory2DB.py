@@ -96,6 +96,10 @@ def get_database_url():
 
 
 def write_to_database(history, logos, database_url):
+    if database_url.startswith("postgresql://"):
+        database_url = database_url.replace(
+            "postgresql://", "postgresql+psycopg2://", 1
+        )
     engine = create_engine(database_url)
     try:
         history.to_sql("ohlc_data", engine, index=False, if_exists="replace")
